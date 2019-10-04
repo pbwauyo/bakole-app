@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Trending extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => TrendingState();
+  createState() => TrendingState();
 }
 
 class TrendingState extends State<Trending>{

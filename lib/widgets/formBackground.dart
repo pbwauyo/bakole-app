@@ -5,14 +5,14 @@ import '../clippers/imageClipper.dart';
 
 class FormBackground extends StatefulWidget{
   @override
-  State<FormBackground> createState(){
+  FormBackgroundState createState(){
     return FormBackgroundState();
   }
 }
 
 class FormBackgroundState extends State<FormBackground>{
   final containerRadius = 8.0;
-  Widget currentWidget = SignUp();
+  Widget currentWidget = Login();
   String currentWigdetName = "Login";
   String topButtonTxt = "Not registered?";
 
@@ -56,18 +56,21 @@ class FormBackgroundState extends State<FormBackground>{
                                         borderRadius: BorderRadius.all(Radius.circular(radius)),
                                         splashColor: Colors.black26,
                                         onTap: (){
-                                          setState((){
-                                            if(currentWigdetName == "Login"){
+                                          if(currentWigdetName == "Login"){
+                                            setState(() {
                                               currentWidget = SignUp();
                                               topButtonTxt = "Already registered?";
                                               currentWigdetName = "Sign up";
-                                            }
-                                            else{
+                                            });
+                                            
+                                          }
+                                          else{
+                                            setState(() {
                                               currentWidget = Login();
                                               topButtonTxt = "Not registered?";
                                               currentWigdetName = "Login";
-                                            }
-                                          });
+                                            });
+                                          }  
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 12.0, right: 12.0),
