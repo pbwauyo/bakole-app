@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bakole/constants/constants.dart';
 import 'package:bakole/httpModels/employer.dart';
 import 'package:bakole/widgets/workerInfo.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ Future<List<Worker>> getWorkers(String query) async{
   };
 
   print("Future start");
-  final url = "http://localhost:3000/workers/";
+  
+  final url = "$LOCAL_HOST/workers/";
 
   try{
     print("before await");

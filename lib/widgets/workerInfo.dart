@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:bakole/EmployerPages/addJob.dart';
+import 'package:bakole/constants/constants.dart';
 import 'package:bakole/httpModels/employer.dart';
 import 'dart:async';
 import 'package:bakole/httpModels/worker.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import "package:http/http.dart" as http;
 
 Future<Worker> getWorker(String workerId) async {
-  final url = "http://localhost:3000/workers/ids/" + workerId;
+  final url = "$LOCAL_HOST/workers/ids/" + workerId;
 
   try{
     final response = await http.get(url);

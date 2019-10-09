@@ -1,10 +1,12 @@
+import 'package:bakole/constants/constants.dart';
 import 'package:bakole/httpModels/employer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../httpModels/job.dart';
 import 'package:http/http.dart' as http;
 
 Future<bool> postJob(Job job, String id) async {
-  final url = "http://localhost:3000/jobs/$id";
+  final url = "$LOCAL_HOST/jobs/$id";
 
   try{
     var task = await http.post(url, body: job.toJson());
@@ -19,8 +21,6 @@ Future<bool> postJob(Job job, String id) async {
     print(e);
     return false;
   }
-  
-  
   
 }
 
@@ -48,257 +48,263 @@ class AddJobState extends State<AddJob>{
   @override 
   Widget build(BuildContext context){
 
-    return Scaffold(
-            appBar: AppBar(
-              title: Text(widget.category),
-            ),
-            body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            child: Column(
-                              children: <Widget>[
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(_titleRadius))
-                                  ),
-                                  child: Container(
-                                    width: 120,
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
-                                    child: Text(
-                                      "Description",
-                                      style: TextStyle(color: Colors.cyan),
-                                      )
+    return MultiProvider(
+      providers: [
+        
+      ],
+      child: Scaffold(
+              appBar: AppBar(
+                title: Text(widget.category),
+              ),
+              body: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(_titleRadius))
                                     ),
-                                ),
-                                
-                                Card(
-                                  elevation: 2,
-                                  child: Container(
-                                    height: 150,
-                                    child: TextFormField(
-                                      controller: descriptionTxt,
-                                      validator: (string){
-                                        if(string.trim()!=""){
-                                          return null;
-                                        }
-                                        else{
-                                          return _emptyFieldError;
-                                        }
-                                      }, 
-                                      maxLines: null,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,     
+                                    child: Container(
+                                      width: 120,
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
+                                      child: Text(
+                                        "Description",
+                                        style: TextStyle(color: Colors.cyan),
+                                        )
+                                      ),
+                                  ),
+                                  
+                                  Card(
+                                    elevation: 2,
+                                    child: Container(
+                                      height: 150,
+                                      child: TextFormField(
+                                        controller: descriptionTxt,
+                                        validator: (string){
+                                          if(string.trim()!=""){
+                                            return null;
+                                          }
+                                          else{
+                                            return _emptyFieldError;
+                                          }
+                                        }, 
+                                        maxLines: null,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,     
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                ),
+                              
+                                ],
                               ),
-                            
-                              ],
                             ),
-                          ),
 
-                          Container(
-                            margin: EdgeInsets.only(top: 8.0),
-                            child: Column(
-                              children: <Widget>[
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(_titleRadius))
-                                  ),
-                                  child: Container(
-                                    width: 120,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Fee",
-                                      style: TextStyle(color: Colors.cyan),
+                            Container(
+                              margin: EdgeInsets.only(top: 8.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(_titleRadius))
+                                    ),
+                                    child: Container(
+                                      width: 120,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Fee",
+                                        style: TextStyle(color: Colors.cyan),
+                                        ),
+                                      padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
                                       ),
-                                    padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
-                                    ),
-                                ),
-
-                                Card(
-                                  elevation: 2,
-                                  child: Container(
-                                    child: TextFormField(
-                                      validator: (string){
-                                        if(string.trim()!=""){
-                                          return null;
-                                        }
-                                        else{
-                                          return _emptyFieldError;
-                                        }
-                                      }, 
-                                      controller: feeTxt,
-                                      decoration: InputDecoration(border: InputBorder.none),
-                                    ),
                                   ),
-                                ),  
-                                
-                              ],
-                            ),
-                          ),
 
-                          Container(
-                            margin: EdgeInsets.only(top: 8.0),
-                            child: Column(
-                              children: <Widget>[
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(_titleRadius))
-                                  ),
-                                  child: Container(
-                                    width: 120,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Location",
-                                      style: TextStyle(color: Colors.cyan),
+                                  Card(
+                                    elevation: 2,
+                                    child: Container(
+                                      child: TextFormField(
+                                        validator: (string){
+                                          if(string.trim()!=""){
+                                            return null;
+                                          }
+                                          else{
+                                            return _emptyFieldError;
+                                          }
+                                        }, 
+                                        controller: feeTxt,
+                                        decoration: InputDecoration(border: InputBorder.none),
                                       ),
-                                    padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
-                                  ),
-                                ),
+                                    ),
+                                  ),  
+                                  
+                                ],
+                              ),
+                            ),
 
-                                Card(
-                                  elevation: 2,
-                                  child: Container(
-                                    child: TextFormField(
-                                      controller: locationTxt,
-                                      validator: (string){
-                                        if(string.trim()!=""){
-                                          return null;
-                                        }
-                                        else{
-                                          return _emptyFieldError;
-                                        }
-                                      }, 
-                                      decoration: InputDecoration(border: InputBorder.none),
+                            Container(
+                              margin: EdgeInsets.only(top: 8.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(_titleRadius))
+                                    ),
+                                    child: Container(
+                                      width: 120,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Location",
+                                        style: TextStyle(color: Colors.cyan),
+                                        ),
+                                      padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
                                     ),
                                   ),
-                                ),  
-                                
-                              ],
-                            ),
-                          ),
 
-                          Container(
-                            margin: EdgeInsets.only(top: 8.0),
-                            child: Column(
-                              children: <Widget>[
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(_titleRadius))
-                                  ),
-                                  child: Container(
-                                    width: 120,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Start time",
-                                      style: TextStyle(color: Colors.cyan),
+                                  Card(
+                                    elevation: 2,
+                                    child: Container(
+                                      child: TextFormField(
+                                        controller: locationTxt,
+                                        validator: (string){
+                                          if(string.trim()!=""){
+                                            return null;
+                                          }
+                                          else{
+                                            return _emptyFieldError;
+                                          }
+                                        }, 
+                                        decoration: InputDecoration(border: InputBorder.none),
                                       ),
-                                    padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
-                                  ),
-                                ),
+                                    ),
+                                  ),  
+                                  
+                                ],
+                              ),
+                            ),
 
-                                Card(
-                                  elevation: 2,
-                                  child: Container(
-                                    child: TextFormField(
-                                      controller: startTimeTxt,
-                                      validator: (string){
-                                        if(string.trim()!=""){
-                                          return null;
-                                        }
-                                        else{
-                                          return _emptyFieldError;
-                                        }
-                                      }, 
-                                      decoration: InputDecoration(border: InputBorder.none),
+                            Container(
+                              margin: EdgeInsets.only(top: 8.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(_titleRadius))
+                                    ),
+                                    child: Container(
+                                      width: 120,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Start time",
+                                        style: TextStyle(color: Colors.cyan),
+                                        ),
+                                      padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
                                     ),
                                   ),
-                                ),  
-                                
-                              ],
+
+                                  Card(
+                                    elevation: 2,
+                                    child: Container(
+                                      child: TextFormField(
+                                        controller: startTimeTxt,
+                                        validator: (string){
+                                          if(string.trim()!=""){
+                                            return null;
+                                          }
+                                          else{
+                                            return _emptyFieldError;
+                                          }
+                                        }, 
+                                        decoration: InputDecoration(border: InputBorder.none),
+                                      ),
+                                    ),
+                                  ),  
+                                  
+                                ],
+                              ),
                             ),
-                          ),
 
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Material(
-                                
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                                ),
-                                elevation: 2,
-                                color: Colors.cyan,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                                  splashColor: Colors.black45,
-                                  onTap: () async{
-                                    
-                                    if(_formKey.currentState.validate()){
-                                      Job job = Job(
-                                        employerEmail: widget.employer.email,
-                                        description: descriptionTxt.text,
-                                        category: widget.category,
-                                        fee: feeTxt.text,
-                                        location: locationTxt.text,
-                                        startTime: startTimeTxt.text
-                                      );
-
-                                      setState(() {
-                                        _isLoading = true;
-                                      });
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Material(
+                                  
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                  ),
+                                  elevation: 2,
+                                  color: Colors.cyan,
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                                    splashColor: Colors.black45,
+                                    onTap: () async{
                                       
-                                      bool isSuccess = await postJob(job, widget.workerId);
+                                      if(_formKey.currentState.validate()){
+                                        Job job = Job(
+                                          employerName: widget.employer.firstName,
+                                          employerEmail: widget.employer.email,
+                                          description: descriptionTxt.text,
+                                          category: widget.category,
+                                          fee: feeTxt.text,
+                                          location: locationTxt.text,
+                                          startTime: startTimeTxt.text
+                                        );
 
-                                      if(isSuccess){
                                         setState(() {
-                                          _isLoading = false;
-                                          Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: Text("Success!"),
-                                            duration: Duration(seconds: 2),
-                                            backgroundColor: Colors.amber,
-                                          )); 
+                                          _isLoading = true;
                                         });
-                                      }
-                                      else{
-                                        setState(() {
-                                          _isLoading = false; 
-                                          Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: Text("Failure!"),
-                                            duration: Duration(seconds: 2),
-                                          )); 
-                                        });
-                                      }
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0, left: 20.0, right: 20.0),
-                                    child: _isLoading? CircularProgressIndicator() : Text(
-                                      "POST",
-                                      style: TextStyle(fontSize: 14, color: Colors.white),
+                                        
+                                        bool isSuccess = await postJob(job, widget.workerId);
 
+                                        if(isSuccess){
+                                          setState(() {
+                                            _isLoading = false;
+                                            Scaffold.of(context).showSnackBar(SnackBar(
+                                              content: Text("Success!"),
+                                              duration: Duration(seconds: 2),
+                                              backgroundColor: Colors.amber,
+                                            )); 
+                                          });
+                                        }
+                                        else{
+                                          setState(() {
+                                            _isLoading = false; 
+                                            Scaffold.of(context).showSnackBar(SnackBar(
+                                              content: Text("Failure!"),
+                                              duration: Duration(seconds: 2),
+                                            )); 
+                                          });
+                                        }
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0, left: 20.0, right: 20.0),
+                                      child: _isLoading? CircularProgressIndicator() : Text(
+                                        "POST",
+                                        style: TextStyle(fontSize: 14, color: Colors.white),
+
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                  ),
-          ),
-      ),
-                ),
+                                )
+                              ],
+                            )
+                          ],
+                    ),
             ),
+        ),
+                  ),
+              ),
+      ),
     );
   }
 
@@ -328,8 +334,10 @@ class TasksState extends State<Tasks>{
   Widget build(BuildContext context) {
     
     return Container(
+      
       width: double.infinity,
       child: Column(
+        
         children: <Widget>[
           Row( 
             children: <Widget>[
@@ -355,6 +363,23 @@ class TasksState extends State<Tasks>{
         ],
       ),
 
+    );
+  }
+}
+
+class TaskBody extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+   
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.done_outline),
+          TextFormField(
+            
+          ),
+        ],
+      ),
     );
   }
 }

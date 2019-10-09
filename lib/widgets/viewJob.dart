@@ -1,8 +1,13 @@
 import 'package:bakole/clippers/rectClipper.dart';
+import 'package:bakole/httpModels/job.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class JobPreview extends StatelessWidget{
+  
+  final Job job;
+  JobPreview({@required this.job});
+
   @override
   build(BuildContext context) => Scaffold(
     body: SafeArea(
@@ -34,7 +39,7 @@ class JobPreview extends StatelessWidget{
                           child: Column(
                             children: <Widget>[
                               Text(
-                                "Papa Peter's Pizza",
+                                job.employerName,
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               ),
 
@@ -53,7 +58,7 @@ class JobPreview extends StatelessWidget{
                                 },
                               ),
 
-                              Text("Delivery"),
+                              Text(job.category),
                             ],
                           ),
                         ),
@@ -62,10 +67,12 @@ class JobPreview extends StatelessWidget{
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.lime[200],
-                      backgroundImage: AssetImage("assets/images/profile_pic.jpg"),
-                      radius: 50.0,
+                    child: Hero(
+                      tag: "avatar",
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage("assets/images/profile_pic.jpg"),
+                        radius: 50.0,
+                      ),
                     ),
                   ),
                 ],
@@ -90,7 +97,7 @@ class JobPreview extends StatelessWidget{
                         ),
 
                         Text(
-                          "Wed, Sep 19 - Thu, Sep 19", 
+                          job.startTime, 
                         ),
                       ],
                     ),
@@ -146,7 +153,7 @@ class JobPreview extends StatelessWidget{
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: FittedBox(
                               fit: BoxFit.cover,
-                              child: Text("800,000"),
+                              child: Text(job.fee),
                             ),
                           ),
                         ],
@@ -166,12 +173,14 @@ class JobPreview extends StatelessWidget{
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0),
                 child: Column(
+                  
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text("WHAT YOU WILL BE DOING"),
                     ),
-                    Text("Use your cell phone to navigate to locations and complete deliveries with our delivery app. Use your own car to deliver 10-15 meals within a 5 mile radius of our location. Communicate clearly and professionally with customers upon arrival with their meal. NOTE: Mileage and tolls will be added into the final pay after route is complete. Keeep your own tips!",
+                    Text(job.description,
                       maxLines: null,
                       style: TextStyle(color: Color(0XFF808080)),
                     ),

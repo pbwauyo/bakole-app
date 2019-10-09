@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class WorkerHistoryPage extends StatefulWidget{
+class History extends StatefulWidget{
 
   @override
-  createState ()=> WorkerHistoryPageState();
+  createState ()=> HistoryState();
 }
 
-class WorkerHistoryPageState extends State<WorkerHistoryPage>{
+class HistoryState extends State<History>{
 
   @override
   build(context) => Container();

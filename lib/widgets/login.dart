@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:bakole/constants/constants.dart';
 import 'package:bakole/httpModels/employer.dart';
 import 'package:bakole/httpModels/worker.dart';
 import 'package:bakole/widgets/employer.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> findUser(String email, String password) async{
-  final url = "http://localhost:3000/users/$email/$password";
+  final url = "$LOCAL_HOST/users/$email/$password";
   try{
     final response = await http.get(url);
     
@@ -17,7 +17,7 @@ Future<Map<String, dynamic>> findUser(String email, String password) async{
       
       final String userType = response.headers["user-type"];
       print("type: $userType");
-      print(response.headers);
+      //print(response.headers);
       print(users);
       if(userType == "worker"){
         return {
@@ -164,7 +164,6 @@ class LoginState extends State<Login>{
                                 if(response["userType"] == "worker"){
                                   print("userType: ${response["userType"]}");
                                   Navigator.push(context, PageRouteBuilder(
-                                    transitionDuration: Duration(seconds: 1),
                                     pageBuilder: (context, animation, secondAimation){
                                       return WorkerActivity(worker: response["user"],);
                                     },
@@ -179,7 +178,6 @@ class LoginState extends State<Login>{
                                 else if (response["userType"] == "employer"){
 
                                   Navigator.push(context, PageRouteBuilder(
-                                    transitionDuration: Duration(seconds: 1),
                                     pageBuilder: (context, anim, secondAnim){
                                       Employer employer = response["user"];
                                       return EmployerActivity(employer);

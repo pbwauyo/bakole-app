@@ -1,6 +1,6 @@
 import 'package:bakole/httpModels/worker.dart';
+import 'package:bakole/workerPages/Home.dart';
 import 'package:bakole/workerPages/history.dart';
-import 'package:bakole/workerPages/home.dart';
 import 'package:bakole/workerPages/jobs.dart';
 import 'package:bakole/workerPages/profile.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +15,11 @@ class WorkerActivity extends StatefulWidget{
 }
 
 class WorkerActivityState extends State<WorkerActivity>{
-  
+  final List<String> tabTitles = ["Home", "History", "Jobs", "Profile"];
 
   @override
   Widget build(BuildContext context) {
+
     
     return MultiProvider(
       providers: [
@@ -28,7 +29,12 @@ class WorkerActivityState extends State<WorkerActivity>{
       
       child: Scaffold(
         appBar: AppBar(
-          title: Text("How can we help you?"),
+          title: Consumer<TabIndex>(
+            builder: (context, tabIndex, _){
+              return Text(tabTitles[tabIndex.tabIndex]);
+            },
+            
+          ),
         ),
         body: Body(),
         bottomNavigationBar: BottomNavBar(),
@@ -45,10 +51,10 @@ class Body extends StatefulWidget{
 
 class BodyState extends State<Body>{
   
-  final List<Widget>  widgets = [Consumer<WorkerProvider>(builder: (_, workerProvider, __) => WorkerHomePage(workerId: workerProvider.worker.id,)), 
-                                  WorkerJobPage(), 
-                                  WorkerHistoryPage(), 
-                                  WorkerProfilePage()];
+  final List<Widget>  widgets = [Home(), 
+                                 History(), 
+                                 Consumer<WorkerProvider>(builder: (_, workerProvider, __) => Jobs(workerId: workerProvider.worker.id,)), 
+                                 Profile()];
  
   @override
   build(context) => Consumer<TabIndex>(
@@ -78,7 +84,6 @@ class BottomNavBarState extends State<BottomNavBar>{
         child: BottomNavigationBar(
           currentIndex: tab.tabIndex,
           onTap: (index){
-            print(index);
             tab.setCurrentIndex = index;
           },
           type: BottomNavigationBarType.shifting,
@@ -88,19 +93,19 @@ class BottomNavBarState extends State<BottomNavBar>{
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               title: Text("Home")
+            ), 
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              title: Text("History"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.business_center),
               title: Text("Jobs")
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              title: Text("History"),
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.person),
               title: Text("Profile")
-            )
+            ),
           ],
         ),
       ),
@@ -125,7 +130,6 @@ class TabIndex with ChangeNotifier{
   //setter
   set setCurrentIndex(int index){
     tabIndex = index;
-    print("notifying");
     notifyListeners();
   } 
 
