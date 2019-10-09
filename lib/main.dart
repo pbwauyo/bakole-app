@@ -35,9 +35,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => FormBackground(),
         '/home': (context) =>HomePage("How can we help you?"), 
-        //'/employer': (context) => Employer(),
-        '/viewJob': (context) => JobPreview(),
-        '/availableEmployees': (context) => SearchWorkers(),
+        
       },
       debugShowCheckedModeBanner: false,
     );
