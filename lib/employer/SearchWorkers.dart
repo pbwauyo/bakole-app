@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/httpModels/Employer.dart';
-import 'package:bakole/widgets/workerInfo.dart';
+import 'package:bakole/employer/WorkerInfo.dart';
 import 'package:flutter/material.dart';
 import '../httpModels/Worker.dart';
 import 'package:http/http.dart' as http;

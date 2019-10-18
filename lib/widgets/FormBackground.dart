@@ -1,7 +1,9 @@
+import 'package:bakole/employer/AddJob.dart';
+import 'package:bakole/httpModels/Employer.dart';
 import 'package:flutter/material.dart';
-import './login.dart';
-import './signUp.dart';
-import '../clippers/imageClipper.dart';
+import './Login.dart';
+import './SignUp.dart';
+import '../clippers/ImageClipper.dart';
 
 class FormBackground extends StatefulWidget{
   @override
@@ -13,7 +15,7 @@ class FormBackground extends StatefulWidget{
 class FormBackgroundState extends State<FormBackground>{
   final containerRadius = 8.0;
   Widget currentWidget = Login();
-  String currentWigdetName = "Login";
+  String currentWidgetName = "Login";
   String topButtonTxt = "Not registered?";
 
   @override
@@ -56,11 +58,11 @@ class FormBackgroundState extends State<FormBackground>{
                                         borderRadius: BorderRadius.all(Radius.circular(radius)),
                                         splashColor: Colors.black26,
                                         onTap: (){
-                                          if(currentWigdetName == "Login"){
+                                          if(currentWidgetName == "Login"){
                                             setState(() {
                                               currentWidget = SignUp();
                                               topButtonTxt = "Already registered?";
-                                              currentWigdetName = "Sign up";
+                                              currentWidgetName = "Sign up";
                                             });
                                             
                                           }
@@ -68,7 +70,7 @@ class FormBackgroundState extends State<FormBackground>{
                                             setState(() {
                                               currentWidget = Login();
                                               topButtonTxt = "Not registered?";
-                                              currentWigdetName = "Login";
+                                              currentWidgetName = "Login";
                                             });
                                           }  
                                         },

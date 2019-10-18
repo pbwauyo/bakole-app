@@ -6,8 +6,9 @@ class Job {
   final String fee;
   final String location;
   final String startTime;
+  final String startDate;
 
-  Job({this.employerName, this.employerEmail, this.description, this.category, this.fee, this.location, this.startTime});
+  Job({this.employerName, this.employerEmail, this.description, this.category, this.fee, this.location, this.startTime, this.startDate});
 
   factory Job.fromJson(Map<String, dynamic> map){
   
@@ -18,7 +19,8 @@ class Job {
       category: map['category'],
       fee: map['fee'],
       location: map['place'],
-      startTime: map['time']
+      startTime: map['time'],
+      startDate: map['date']
     );
   }
 
@@ -30,7 +32,8 @@ class Job {
       'category' : category,
       'fee' : fee,
       'place' : location,
-      'time' : startTime
+      'time' : startTime,
+      'date' : startDate
     };
   }
 

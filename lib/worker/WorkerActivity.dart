@@ -1,8 +1,8 @@
 import 'package:bakole/httpModels/Worker.dart';
-import 'package:bakole/workerPages/Home.dart';
-import 'package:bakole/workerPages/History.dart';
-import 'package:bakole/workerPages/Jobs.dart';
-import 'package:bakole/workerPages/Profile.dart';
+import 'package:bakole/worker/Home.dart';
+import 'package:bakole/worker/History.dart';
+import 'package:bakole/worker/Jobs.dart';
+import 'package:bakole/worker/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +51,7 @@ class Body extends StatefulWidget{
 
 class BodyState extends State<Body>{
   
-  final List<Widget>  widgets = [Home(), 
+  final List<Widget>  widgets = [Consumer<WorkerProvider>(builder: (_, workerProvider, __) => Home(worker: workerProvider.worker,),), 
                                  History(), 
                                  Consumer<WorkerProvider>(builder: (_, workerProvider, __) => Jobs(workerId: workerProvider.worker.id,)), 
                                  Profile()];

@@ -97,7 +97,7 @@ class JobPreview extends StatelessWidget{
                         ),
 
                         Text(
-                          job.startTime, 
+                          job.startDate, 
                         ),
                       ],
                     ),
@@ -114,7 +114,7 @@ class JobPreview extends StatelessWidget{
                         ),
 
                         Text(
-                          "2:00 pm - 6:00 pm", 
+                          job.startTime, 
                         ),
                       ],
                     ),

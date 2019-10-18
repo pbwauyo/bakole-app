@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/httpModels/Worker.dart';
-import 'package:bakole/widgets/EmployerActivity.dart';
-import 'package:bakole/widgets/workerActivity.dart';
+import 'package:bakole/employer/EmployerActivity.dart';
+import 'package:bakole/worker/WorkerActivity.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,7 +17,7 @@ Future<Map<String, dynamic>> findUser(String email, String password) async{
       
       final String userType = response.headers["user-type"];
       print("type: $userType");
-      //print(response.headers);
+      
       print(users);
       if(userType == "worker"){
         return {

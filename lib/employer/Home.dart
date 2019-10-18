@@ -1,6 +1,6 @@
-import 'package:bakole/httpModels/employer.dart';
-import 'package:bakole/widgets/availableEmployees.dart';
-import 'package:bakole/widgets/employer.dart';
+import 'package:bakole/httpModels/Employer.dart';
+import 'package:bakole/employer/SearchWorkers.dart';
+import 'package:bakole/employer/EmployerActivity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -11,8 +11,6 @@ class Home extends StatefulWidget{
 
 class HomeState extends State<Home>{
 
-
-
   @override
   build(context) => Container(
     child: Column(
@@ -20,9 +18,9 @@ class HomeState extends State<Home>{
         Card(
           child: Container(
             decoration: BoxDecoration(
-              image: DecorationImage(
-                  image:
-              ),
+//              image: DecorationImage(
+//                  image:
+//              ),
             ),
             child: Column(
               children: <Widget>[

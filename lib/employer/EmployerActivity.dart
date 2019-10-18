@@ -1,10 +1,10 @@
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../employer/AddJob.dart';
-import '../employer/Home.dart';
-import '../employer/searchJobs.dart';
-import '../employer/ViewJobs.dart';
+import 'AddJob.dart';
+import 'Home.dart';
+import 'searchJobs.dart';
+import 'ViewJobs.dart';
 
 class EmployerActivity extends StatefulWidget{
   EmployerActivity(this.employer);

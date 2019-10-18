@@ -1,9 +1,11 @@
-import 'package:bakole/constants/constants.dart';
-import 'package:bakole/httpModels/employer.dart';
+import 'package:bakole/constants/Constants.dart';
+import 'package:bakole/httpModels/Employer.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../httpModels/job.dart';
+import '../httpModels/Job.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 Future<bool> postJob(Job job, String id) async {
   final url = "$LOCAL_HOST/jobs/$id";
@@ -42,15 +44,16 @@ class AddJobState extends State<AddJob>{
   var _isLoading = false;
   final feeTxt = TextEditingController(); 
   final locationTxt = TextEditingController();
-  final startTimeTxt = TextEditingController();
   final descriptionTxt = TextEditingController();
+  
   
   @override 
   Widget build(BuildContext context){
 
     return MultiProvider(
       providers: [
-        
+        ChangeNotifierProvider(builder: (context) => Date(),),
+        ChangeNotifierProvider(builder: (context) => Time(),),
       ],
       child: Scaffold(
               appBar: AppBar(
@@ -206,27 +209,14 @@ class AddJobState extends State<AddJob>{
                                         "Start time",
                                         style: TextStyle(color: Colors.cyan),
                                         ),
-                                      padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
+                                      padding: const EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
                                     ),
-                                  ),
+                                  ), 
 
-                                  Card(
-                                    elevation: 2,
-                                    child: Container(
-                                      child: TextFormField(
-                                        controller: startTimeTxt,
-                                        validator: (string){
-                                          if(string.trim()!=""){
-                                            return null;
-                                          }
-                                          else{
-                                            return _emptyFieldError;
-                                          }
-                                        }, 
-                                        decoration: InputDecoration(border: InputBorder.none),
-                                      ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                                    child: DateTimeWidget()
                                     ),
-                                  ),  
                                   
                                 ],
                               ),
@@ -247,44 +237,56 @@ class AddJobState extends State<AddJob>{
                                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
                                     splashColor: Colors.black45,
                                     onTap: () async{
-                                      
-                                      if(_formKey.currentState.validate()){
-                                        Job job = Job(
-                                          employerName: widget.employer.firstName,
-                                          employerEmail: widget.employer.email,
-                                          description: descriptionTxt.text,
-                                          category: widget.category,
-                                          fee: feeTxt.text,
-                                          location: locationTxt.text,
-                                          startTime: startTimeTxt.text
-                                        );
+                                      String time = Provider.of<Time>(context).getTime;
+                                      String date = Provider.of<Date>(context).getDate;
 
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
-                                        
-                                        bool isSuccess = await postJob(job, widget.workerId);
+                                      if (time != "" || date != ""){
+                                        if(_formKey.currentState.validate()){
+                                          Job job = Job(
+                                            employerName: widget.employer.firstName,
+                                            employerEmail: widget.employer.email,
+                                            description: descriptionTxt.text,
+                                            category: widget.category,
+                                            fee: feeTxt.text,
+                                            location: locationTxt.text,
+                                            startTime: time,
+                                            startDate: date
+                                          );
 
-                                        if(isSuccess){
                                           setState(() {
-                                            _isLoading = false;
-                                            Scaffold.of(context).showSnackBar(SnackBar(
-                                              content: Text("Success!"),
-                                              duration: Duration(seconds: 2),
-                                              backgroundColor: Colors.amber,
-                                            )); 
+                                            _isLoading = true;
                                           });
+                                          
+                                          bool isSuccess = await postJob(job, widget.workerId);
+
+                                          if(isSuccess){
+                                            setState(() {
+                                              _isLoading = false;
+                                              Scaffold.of(context).showSnackBar(SnackBar(
+                                                content: Text("Success!"),
+                                                duration: Duration(seconds: 2),
+                                                backgroundColor: Colors.amber,
+                                              )); 
+                                            });
+                                          }
+                                          else{
+                                            setState(() {
+                                              _isLoading = false; 
+                                              Scaffold.of(context).showSnackBar(SnackBar(
+                                                content: Text("Failure!"),
+                                                duration: Duration(seconds: 2),
+                                              )); 
+                                            });
+                                          }
                                         }
-                                        else{
-                                          setState(() {
-                                            _isLoading = false; 
-                                            Scaffold.of(context).showSnackBar(SnackBar(
-                                              content: Text("Failure!"),
-                                              duration: Duration(seconds: 2),
-                                            )); 
-                                          });
-                                        }
-                                      }
+                                    }
+                                    else{
+                                      Scaffold.of(context).showSnackBar(
+                                        SnackBar(content: Text("Please fill the date correctly"),
+                                          duration: Duration(seconds: 2),
+                                        )
+                                      );
+                                    }
                                     },
                                     child: Padding(
                                       padding: EdgeInsets.only(top: 10.0, bottom: 10.0, left: 20.0, right: 20.0),
@@ -313,7 +315,6 @@ class AddJobState extends State<AddJob>{
    descriptionTxt.dispose();
    feeTxt.dispose();
    locationTxt.dispose();
-   startTimeTxt.dispose(); 
    super.dispose();
   }
 }
@@ -463,6 +464,192 @@ class CategoriesMenuState extends State<CategoriesMenu>{
             ),
         );
   }
-
   
+}
+
+class DateTimeWidget extends StatelessWidget{
+  final DateFormat dateformat = DateFormat("dd - MM - yyyy");
+  final DateFormat timeFormat = DateFormat("hh : mm a");
+
+  @override
+  build(context){
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Consumer<Date>(
+          builder: (context, _date, _) => Card(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: IconTheme(
+                            child: Icon(Icons.calendar_today),
+                            data: IconThemeData(
+                              color: Colors.lightGreen,
+                            ),
+                          ),
+                        ),
+
+                        Text(_date.getDate == "" ? "Not Set" : _date.getDate,
+                          style: TextStyle(
+                            color: Colors.lightGreen
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Material(
+                      color: Colors.lightGreen,
+                      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                      child: InkWell(
+                        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                        splashColor: Colors.black12,
+                        onTap: (){
+                          DatePicker.showDatePicker(context,
+                            minTime: DateTime.now(),
+                            maxTime: DateTime(DateTime.now().year+2),
+                            currentTime: DateTime.now(),
+                            showTitleActions: true,
+                            onConfirm: (date){
+                              _date.date = dateformat.format(date);
+                            }
+                          );
+                        },
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 8.0, bottom: 8.0),
+                            child: Text("Change",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+
+                ],
+              ),
+            ),
+          ),
+
+        ),
+
+        Consumer<Time>(
+          builder: (context, _time, _) => Card(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: IconTheme(
+                            data: IconThemeData(
+                              color: Colors.lightGreen,
+                            ),
+                            child: Icon(Icons.access_time),
+                          ),
+                        ),
+
+                        Text(_time.getTime == "" ? "Not Set" : _time.getTime,
+                          style: TextStyle(
+                              color: Colors.lightGreen
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Material(
+                      color: Colors.lightGreen,
+                      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                      child: InkWell(
+                        onTap: (){
+                          DatePicker.showTimePicker(context,
+                            showTitleActions: true,
+                            currentTime: DateTime.now(),
+                            onConfirm: (time){
+                              _time.time = timeFormat.format(time);
+                              
+                            }
+                          );
+
+                        },
+                        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                        splashColor: Colors.black12,
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 8.0, bottom: 8.0),
+                            child: Text("Change",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+
+                ],
+              ),
+            ),
+          ),
+
+        ),
+
+
+      ],
+    );
+  }
+}
+
+class Date with ChangeNotifier{
+  String _date = "";
+
+  //getter
+  String get getDate{
+    return this._date;
+  }
+
+  //setter
+  set date(String d){
+    this._date = d;
+    notifyListeners();
+  }
+
+}
+
+class Time with ChangeNotifier{
+  String _time = "";
+
+  //getter
+  String get getTime{
+    return this._time;
+  }
+
+  //setter
+  set time(String time){
+    this._time = time;
+    notifyListeners();
+  }
+
 }
