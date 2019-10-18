@@ -1,7 +1,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../httpModels/employer.dart';
+import '../httpModels/Employer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -64,14 +64,14 @@ Future<Employer> testGet() async {
   
 }
 
-class WorkerSignUp extends StatefulWidget{
+class SignUp extends StatefulWidget{
   @override
-  WorkerSignUpState createState() {  
-    return WorkerSignUpState();
+  SignUpState createState() {  
+    return SignUpState();
   }
 }
 
-class WorkerSignUpState extends State<WorkerSignUp>{
+class SignUpState extends State<SignUp>{
   final firstNameTxt = TextEditingController(); 
   final lastNameTxt = TextEditingController();
   final sexTxt = TextEditingController();
@@ -325,7 +325,7 @@ class WorkerSignUpState extends State<WorkerSignUp>{
                                     password: pswdTxt.text,
                                   ));
 
-                                
+                                 // testGet();
                                 }
                                 else{
                                   Scaffold.of(context).showSnackBar(

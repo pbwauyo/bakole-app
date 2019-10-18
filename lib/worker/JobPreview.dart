@@ -1,5 +1,5 @@
-import 'package:bakole/clippers/rectClipper.dart';
-import 'package:bakole/httpModels/job.dart';
+import 'package:bakole/clippers/RectClipper.dart';
+import 'package:bakole/httpModels/Job.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

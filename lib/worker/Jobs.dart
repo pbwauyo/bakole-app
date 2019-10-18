@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:bakole/clippers/rectClipper.dart';
-import 'package:bakole/constants/constants.dart';
-import 'package:bakole/httpModels/job.dart';
+import 'package:bakole/clippers/RectClipper.dart';
+import 'package:bakole/constants/Constants.dart';
+import 'package:bakole/httpModels/Job.dart';
 import 'package:bakole/widgets/viewJob.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

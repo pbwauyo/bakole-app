@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:bakole/EmployerPages/addJob.dart';
-import 'package:bakole/constants/constants.dart';
-import 'package:bakole/httpModels/employer.dart';
+import 'package:bakole/employer/AddJob.dart';
+import 'package:bakole/constants/Constants.dart';
+import 'package:bakole/httpModels/Employer.dart';
 import 'dart:async';
-import 'package:bakole/httpModels/worker.dart';
+import 'package:bakole/httpModels/Worker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
