@@ -77,37 +77,46 @@ class BottomNavBarState extends State<BottomNavBar>{
     
     return Consumer<TabIndex>(
 
-      builder: (context, tab, _) => Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.lime[50],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: tab.tabIndex,
-          onTap: (index){
-            tab.setCurrentIndex = index;
-          },
-          type: BottomNavigationBarType.shifting,
-          selectedItemColor: Colors.blue[400],
-          unselectedItemColor: Colors.cyan,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text("Home")
-            ), 
-            BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              title: Text("History"),
+      builder: (context, tab, _) => Stack(
+        children: <Widget>[
+          
+
+          Container(
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                //canvasColor: Colors.grey.shade400.withOpacity(0.0)
+              ),
+              child: BottomNavigationBar(
+
+                currentIndex: tab.tabIndex,
+                onTap: (index){
+                  tab.setCurrentIndex = index;
+                },
+                type: BottomNavigationBarType.shifting,
+                selectedItemColor: Colors.blue[400],
+                unselectedItemColor: Colors.cyan,
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    title: Text("Home")
+                  ), 
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.history),
+                    title: Text("History"),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.business_center),
+                    title: Text("Jobs")
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    title: Text("Profile")
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business_center),
-              title: Text("Jobs")
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text("Profile")
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

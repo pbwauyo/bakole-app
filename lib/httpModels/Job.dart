@@ -37,6 +37,12 @@ class Job {
     };
   }
 
+  @override
+  String toString() {
+    
+    return "\n employerName: $employerName\n employerEmail: $employerEmail\n description: $description\n category: $category fee: $fee\n place: $location\n startTime: $startTime\n startDate: $startDate\n";
+  }
+
 
 
 }

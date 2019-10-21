@@ -328,6 +328,52 @@ class JobPreview extends StatelessWidget{
               ),
             ),
           ),
+
+          Container(
+            margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+            
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Material(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  color: Colors.green[400],
+                  child: InkWell(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    splashColor: Colors.black38,
+                    onTap: (){
+
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: 16.0, left: 16.0),
+                      child: Text("ACCEPT", 
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Material(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  color: Colors.red[400],
+                  child: InkWell(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    splashColor: Colors.black38,
+                    onTap: (){
+
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: 16.0, left: 16.0),
+                      child: Text("DECLINE", 
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     ),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bakole/httpModels/Worker.dart';
 import 'package:flutter/material.dart';
 
@@ -13,23 +15,37 @@ class HomeState extends State<Home>{
 
   @override
   build(context) => Container(
-    child: Column(
-      children: <Widget>[
-        Card(
-          child: Container(
-            decoration: BoxDecoration(
-//              image: DecorationImage(
-//                  image:
-//              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                FlutterLogo()
-              ],
-            )
-          ),
-        )
-      ],
+    width: double.infinity,
+    
+    decoration: BoxDecoration(
+      
+      image: DecorationImage(
+        image: AssetImage("assets/images/home.jpg"),
+        fit: BoxFit.cover
+      )
     ),
+    child: Center(
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 10,
+                  sigmaY: 10
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),   
+                    color: Colors.grey.shade400.withOpacity(0.5),
+                  ),
+                  width: 300,
+                  height: 300,
+                  
+                  child: Center(
+                    child: Text("Welcome", 
+                      style: TextStyle(fontSize: 50, color: Colors.white),),
+                  ),
+                ),
+              ),
+            ),
+          )
   );
 }

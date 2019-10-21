@@ -1,3 +1,5 @@
+import 'dart:ui' as prefix0;
+
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/employer/SearchWorkers.dart';
 import 'package:bakole/employer/EmployerActivity.dart';
@@ -71,46 +73,75 @@ class CategoriesState extends State<Categories>{
                 borderRadius: BorderRadius.all(Radius.circular(radius)),
               ),
               child: Container(
-                child: Column(
+                child: Stack(
                   children: <Widget>[
-                    Container(
-                      height: 120,
-                      width: double.infinity,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(radius), topRight: Radius.circular(radius)),
-                        child: Image(image: AssetImage("assets/images/$imageUrl"), fit: BoxFit.cover, ),
+                    Positioned.fill(
+                      child: Container(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(radius)),
+                          child: Image(image: AssetImage("assets/images/$imageUrl"), fit: BoxFit.cover, ),
+                        ),
                       ),
                     ),
-                    Text(caption),
-                    Material(
-                      borderRadius: BorderRadius.all(Radius.circular(radius)),
-                      color: Colors.cyan,
-                      
-                      child: InkWell(
-                        splashColor: Colors.amber,
-                        borderRadius: BorderRadius.all(Radius.circular(radius)),
-                        onTap: (){
-                          Navigator.push(context, PageRouteBuilder(
-                            transitionDuration: Duration(milliseconds: 500),
-                            pageBuilder: (context, anim, secondAnim){
-                              return SearchWorkers(category: caption, employer: widget.employer,);
-                            },
-                            transitionsBuilder: (context, anim, secondAnim, child){
-                              final begin = Offset(1, 0);
-                              final end = Offset(0, 0);
-                              final tween = Tween(begin: begin, end: end);
+                    
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade400.withOpacity(0.5),
+                        ),
+                        
+                        child: ClipRect(
+                          child: BackdropFilter(
+                            filter: prefix0.ImageFilter.blur(
+                              sigmaX: 10.0,
+                              sigmaY: 10.0
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(caption),
+                                  Material(
+                                    
+                                    color: Colors.white.withOpacity(0.0),
+                                    
+                                    child: InkWell(
+                                      splashColor: Colors.amber,
+                                      
+                                      onTap: (){
+                                        Navigator.push(context, PageRouteBuilder(
+                                          transitionDuration: Duration(milliseconds: 500),
+                                          pageBuilder: (context, anim, secondAnim){
+                                            return SearchWorkers(category: caption, employer: widget.employer,);
+                                          },
+                                          transitionsBuilder: (context, anim, secondAnim, child){
+                                            final begin = Offset(1, 0);
+                                            final end = Offset(0, 0);
+                                            final tween = Tween(begin: begin, end: end);
 
-                              return SlideTransition(
-                                position: anim.drive(tween.chain(CurveTween(curve: Curves.decelerate))),
-                                child: child,
-                              );
-                            }
-                          ));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10.0, right: 10.0),
-                          child: Text("Find workers"),
-                        )
+                                            return SlideTransition(
+                                              position: anim.drive(tween.chain(CurveTween(curve: Curves.decelerate))),
+                                              child: child,
+                                            );
+                                          }
+                                        ));
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10.0, right: 10.0),
+                                        child: Text("Find workers"),
+                                      )
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ), 
                   ],
