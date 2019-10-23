@@ -1,5 +1,6 @@
 import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/httpModels/Employer.dart';
+import 'package:bakole/httpModels/Worker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -7,18 +8,19 @@ import '../httpModels/Job.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-Future<bool> postJob(Job job, String id) async {
-  final url = "$AWS_SERVER_URL/jobs/$id";
-
+Future<bool> postJob(Job job, List<Worker> workersList) async {
+  final String url = "$AWS_SERVER_URL/jobs/";
+  var task;
   try{
-    var task = await http.post(url, body: job.toJson());
-    print(task.statusCode);
-    if(task.statusCode == 200){
-      
-      return true;
+    for (Worker worker in workersList) {
+      task = await http.post("$url/${worker.id}", body: job.toJson());
+      print(task.statusCode);
+      if(!(task.statusCode == 200)){
+        return false;
+      }
     }
-    else return false;
-
+    return true;
+    
   }catch(e){
     print(e);
     return false;
@@ -28,10 +30,10 @@ Future<bool> postJob(Job job, String id) async {
 
 class AddJob extends StatefulWidget{
   final String category;
-  final String workerId;
+  final List<Worker> workersList;
   final Employer employer;
 
-  AddJob({this.category, this.workerId, @required this.employer});
+  AddJob({this.category, this.workersList, @required this.employer});
 
   @override
   AddJobState createState() => AddJobState();
@@ -62,9 +64,8 @@ class AddJobState extends State<AddJob>{
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Form(
-                      key: _formKey,
-                      child: SingleChildScrollView(
-                        
+                        key: _formKey,
+                        child: SingleChildScrollView(
                           child: Column(
                             children: <Widget>[
                               Container(
@@ -194,7 +195,7 @@ class AddJobState extends State<AddJob>{
                               ),
 
                               Container(
-                                margin: EdgeInsets.only(top: 8.0),
+                                margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
                                 child: Column(
                                   children: <Widget>[
                                     Card(
@@ -221,16 +222,18 @@ class AddJobState extends State<AddJob>{
                                 ),
                               ),
 
-                              //this.formKey, this.descriptionTxt, this.locationTxt, this.feeTxt, this.employerEmail, this.employerName, this.category, this.workerId
-                              PostButton(
-                                formKey: _formKey,
-                                descriptionTxt: descriptionTxt,
-                                locationTxt: locationTxt,
-                                feeTxt: feeTxt,
-                                employerEmail: widget.employer.email,
-                                employerName: widget.employer.lastName,
-                                category: widget.category,
-                                workerId: widget.workerId,
+                              Container(
+                                margin: EdgeInsets.only(bottom: 10.0),
+                                child: PostButton(
+                                  formKey: _formKey,
+                                  descriptionTxt: descriptionTxt,
+                                  locationTxt: locationTxt,
+                                  feeTxt: feeTxt,
+                                  employerEmail: widget.employer.email,
+                                  employerName: widget.employer.lastName,
+                                  category: widget.category,
+                                  workersList: widget.workersList,
+                                ),
                               ),
                             ],
                       ),
@@ -586,11 +589,13 @@ class Time with ChangeNotifier{
 }
 
 class PostButton extends StatefulWidget{
+  
   final GlobalKey<FormState> formKey;
   final TextEditingController descriptionTxt, locationTxt, feeTxt;
-  final String employerEmail, employerName, category, workerId;
+  final String employerEmail, employerName, category;
+  final List<Worker> workersList;
 
-  PostButton({@required this.formKey, @required this.descriptionTxt, @required this.locationTxt, @required this.feeTxt, @required this.employerEmail, @required this.employerName, @required this.category, @required this.workerId});
+  PostButton({@required this.formKey, @required this.descriptionTxt, @required this.locationTxt, @required this.feeTxt, @required this.employerEmail, @required this.employerName, @required this.category, @required this.workersList});
 
   @override
   _PostButtonState createState() => _PostButtonState();
@@ -641,7 +646,7 @@ class _PostButtonState extends State<PostButton> {
                             _isLoading = true;
                           });
                           
-                          bool isSuccess = await postJob(job, widget.workerId);
+                          bool isSuccess = await postJob(job, widget.workersList);
 
                           if(isSuccess){
                             setState(() {

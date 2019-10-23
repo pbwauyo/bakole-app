@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:bakole/constants/Constants.dart';
+import 'package:bakole/employer/AddJob.dart';
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/employer/WorkerInfo.dart';
 import 'package:flutter/material.dart';
@@ -313,7 +314,27 @@ class WorkersList extends StatelessWidget{
                       ),
                     ),
                     onPressed: (){
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, anim, secondAnim){
+                            return AddJob(
+                              category: category,
+                              employer: employer,
+                              workersList: snapshot.data,
+                            );
+                          },
+                          transitionsBuilder: (context, anim, secondAnim, child){
+                            final begin = Offset(1, 0);
+                            final end = Offset(0, 0);
+                            final tween = Tween(begin: begin, end: end);
 
+                            return SlideTransition(
+                              position: anim.drive(tween.chain(CurveTween(curve: Curves.easeIn))),
+                              child: child,
+                            );
+                          }
+                        )
+                      );
                     },
                   ),
                 ),

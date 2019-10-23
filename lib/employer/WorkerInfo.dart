@@ -174,22 +174,22 @@ class WorkerInfo extends StatelessWidget{
                                     child: InkWell(
                                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                                       onTap: (){
-                                        Navigator.of(context).push(PageRouteBuilder(
-                                          pageBuilder: (context, animation, secondaryAnimation) => AddJob(workerId: workerId, employer: this.employer, category: category,),
-                                          transitionDuration: Duration(seconds: 1),
-                                          transitionsBuilder: (context, animation, secondaryAnimation, child){
-                                            var begin = Offset(0, 1);
-                                            var end = Offset(0, 0);
-                                            var curve = Curves.ease;
-                                            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                        // Navigator.of(context).push(PageRouteBuilder(
+                                        //   pageBuilder: (context, animation, secondaryAnimation) => AddJob(workerId: workerId, employer: this.employer, category: category,),
+                                        //   transitionDuration: Duration(seconds: 1),
+                                        //   transitionsBuilder: (context, animation, secondaryAnimation, child){
+                                        //     var begin = Offset(0, 1);
+                                        //     var end = Offset(0, 0);
+                                        //     var curve = Curves.ease;
+                                        //     var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-                                            return SlideTransition(
-                                              position: animation.drive(tween),
-                                              child: child,
-                                            ); 
+                                        //     return SlideTransition(
+                                        //       position: animation.drive(tween),
+                                        //       child: child,
+                                        //     ); 
 
-                                          }
-                                        ));
+                                        //   }
+                                        // ));
                                       },
                                       child: Center(child: Padding(
                                         padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
