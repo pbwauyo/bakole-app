@@ -655,7 +655,11 @@ class _PostButtonState extends State<PostButton> {
                                 content: Text("Success!"),
                                 duration: Duration(seconds: 2),
                                 backgroundColor: Colors.amber,
-                              )); 
+                              ));
+
+                              widget.descriptionTxt.text = "" ;
+                              widget.locationTxt.text = "";
+                              widget.feeTxt.text = "";
                             });
                           }
                           else{

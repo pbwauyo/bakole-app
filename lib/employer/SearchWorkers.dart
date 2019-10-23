@@ -226,7 +226,6 @@ class WorkersList extends StatelessWidget{
                                     workerId: snapshot.data[index].id, category: category, 
                                     employer: employer,
                                   ),
-                                  transitionDuration: Duration(seconds: 1),
                                   transitionsBuilder: (context, animation, secondAnim, child){
                                     var begin = Offset(1, 1);
                                     var end = Offset(0, 0);
@@ -304,15 +303,14 @@ class WorkersList extends StatelessWidget{
                 child: Container(
                   padding: EdgeInsets.all(8.0),
                   child: FloatingActionButton(
-                    elevation: 4.0,
-                    child: Center(
+                    elevation: 4.0,                    
                       child: IconTheme(
                         data: IconThemeData(
                           color: Colors.white
                         ),
                         child: Icon(Icons.send),
                       ),
-                    ),
+                    
                     onPressed: (){
                       Navigator.of(context).push(
                         PageRouteBuilder(
