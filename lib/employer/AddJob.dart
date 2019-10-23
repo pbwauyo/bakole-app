@@ -41,7 +41,6 @@ class AddJobState extends State<AddJob>{
   final _formKey = GlobalKey<FormState>();
   final _titleRadius = 30.0;
   final _emptyFieldError = "field cannot be empty";
-  var _isLoading = false;
   final feeTxt = TextEditingController(); 
   final locationTxt = TextEditingController();
   final descriptionTxt = TextEditingController();
@@ -598,9 +597,11 @@ class PostButton extends StatefulWidget{
 }
 
 class _PostButtonState extends State<PostButton> {
+
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context){
-    bool _isLoading = false; 
 
     return Row(
               crossAxisAlignment: CrossAxisAlignment.center,

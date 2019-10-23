@@ -202,96 +202,124 @@ class WorkersList extends StatelessWidget{
           );
         }
         else 
-          return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index){
-                
-                if(snapshot.hasError){
-                  return Center(child: Text("${snapshot.error}"));
-                }
+          return Stack(
+            children: <Widget>[
 
-                else if(snapshot.data != []){
-                  return Material(
-                    child: InkWell(
-                      splashColor: Colors.black45,
-                      onTap: (){
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            pageBuilder: (context, amimation, secondAnimation)=>WorkerInfo(
-                              workerId: snapshot.data[index].id, category: category, 
-                              employer: employer,
-                            ),
-                            transitionDuration: Duration(seconds: 1),
-                            transitionsBuilder: (context, animation, secondAnim, child){
-                              var begin = Offset(1, 1);
-                              var end = Offset(0, 0);
-                              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.easeIn));
+              Positioned.fill(
+                child: ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index){
+                      
+                      if(snapshot.hasError){
+                        return Center(child: Text("${snapshot.error}"));
+                      }
 
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            }
-                          )
-                          );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: skillColors[snapshot.data[index].skillStatus],
-                                      width: 2.0        
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                    image: DecorationImage(
-                                      image: AssetImage("assets/images/default_pic.png"), 
-                                      fit: BoxFit.cover,
-                                    )
-                                  ), 
-                                ),
-                              ),
+                      else if(snapshot.data != []){
+                        return Material(
+                          child: InkWell(
+                            splashColor: Colors.black45,
+                            onTap: (){
+                              Navigator.of(context).push(
+                                PageRouteBuilder(
+                                  pageBuilder: (context, amimation, secondAnimation)=>WorkerInfo(
+                                    workerId: snapshot.data[index].id, category: category, 
+                                    employer: employer,
+                                  ),
+                                  transitionDuration: Duration(seconds: 1),
+                                  transitionsBuilder: (context, animation, secondAnim, child){
+                                    var begin = Offset(1, 1);
+                                    var end = Offset(0, 0);
+                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.easeIn));
 
-                              Flexible(
-                                fit: FlexFit.loose,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                    return SlideTransition(
+                                      position: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  }
+                                )
+                                );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                child: Row(
                                   children: <Widget>[
-                                    Container(
-                                      child: Text(snapshot.data.elementAt(index).firstName),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: Container(
+                                        width: 100.0,
+                                        height: 100.0,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: skillColors[snapshot.data[index].skillStatus],
+                                            width: 2.0        
+                                          ),
+                                          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                          image: DecorationImage(
+                                            image: AssetImage("assets/images/default_pic.png"), 
+                                            fit: BoxFit.cover,
+                                          )
+                                        ), 
+                                      ),
                                     ),
 
-                                    Container(
-                                      child: Text(snapshot.data.elementAt(index).phoneNumber),
-                                    ),
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Container(
+                                            child: Text(snapshot.data.elementAt(index).firstName),
+                                          ),
 
-                                    Container(
-                                      child: Text("starting from UGX ${snapshot.data.elementAt(index).averagePay}"),
+                                          Container(
+                                            child: Text(snapshot.data.elementAt(index).phoneNumber),
+                                          ),
+
+                                          Container(
+                                            child: Text("starting from UGX ${snapshot.data.elementAt(index).averagePay}"),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
+                        );
+                        }
+                        else {
+                          return Center(
+                            child: Text("Data is empty"),
+                          );
+                        }
+                      },
+                    ),
+              ),
+
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: FloatingActionButton(
+                    elevation: 4.0,
+                    child: Center(
+                      child: IconTheme(
+                        data: IconThemeData(
+                          color: Colors.white
                         ),
+                        child: Icon(Icons.send),
                       ),
                     ),
-                  );
-                  }
-                  else {
-                    return Center(
-                      child: Text("Data is empty"),
-                    );
-                  }
-                },
-              );
+                    onPressed: (){
+
+                    },
+                  ),
+                ),
+              )
+            ],
+          );
       },
     );
   }
