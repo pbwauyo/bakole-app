@@ -10,7 +10,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import "package:http/http.dart" as http;
 
 Future<Worker> getWorker(String workerId) async {
-  final url = "$LOCAL_HOST/workers/ids/" + workerId;
+  final url = "$AWS_SERVER_URL/workers/ids/" + workerId;
 
   try{
     final response = await http.get(url);

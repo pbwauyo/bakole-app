@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> findUser(String email, String password) async{
-  final url = "$LOCAL_HOST/users/$email/$password";
+  final url = "$AWS_SERVER_URL/users/$email/$password";
+  print(url);
   try{
     final response = await http.get(url);
     

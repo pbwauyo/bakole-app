@@ -15,7 +15,7 @@ Future<List<Worker>> getWorkers(String query) async{
 
   print("Future start");
   
-  final url = "$LOCAL_HOST/workers/";
+  final url = "$AWS_SERVER_URL/workers/";
 
   try{
     print("before await");

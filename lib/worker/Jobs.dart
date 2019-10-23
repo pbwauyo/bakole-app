@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Job>> getJobs(String workerId) async {
-  final String url = "$LOCAL_HOST/jobs/$workerId";
+  final String url = "$AWS_SERVER_URL/jobs/$workerId";
   final response = await http.get(url);
 
   try{

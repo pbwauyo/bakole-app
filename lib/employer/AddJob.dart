@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 Future<bool> postJob(Job job, String id) async {
-  final url = "$LOCAL_HOST/jobs/$id";
+  final url = "$AWS_SERVER_URL/jobs/$id";
 
   try{
     var task = await http.post(url, body: job.toJson());
