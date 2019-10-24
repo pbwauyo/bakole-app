@@ -327,7 +327,7 @@ class WorkersList extends StatelessWidget{
                             final tween = Tween(begin: begin, end: end);
 
                             return SlideTransition(
-                              position: anim.drive(tween.chain(CurveTween(curve: Curves.easeIn))),
+                              position: anim.drive(tween.chain(CurveTween(curve: Curves.decelerate))),
                               child: child,
                             );
                           }

@@ -15,8 +15,8 @@ class Home extends StatefulWidget{
 }
 
 class HomeState extends State<Home>{
-  final List <String> images = ["cleaning.jpg", "construction.jpg", "handyman.jpg", "moving.jpg", "painting.jpg"];
-  final List<String> imageNames = ["Cleaning services", "Construction work", "Handyman services", "Moving goods", "Painting work"];
+  final List <String> images = ["cleaning.jpg", "construction.jpg", "handyman.jpg", "moving.jpg", "painting.jpg", "laundry.jpg"];
+  final List<String> imageNames = ["Cleaning services", "Construction work", "Handyman services", "Moving goods", "Painting work", "Laundry work"];
 
   List<Item> items = []; 
 
@@ -86,58 +86,77 @@ class CategoriesState extends State<Categories>{
                     
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade400.withOpacity(0.5),
-                        ),
-                        
-                        child: ClipRect(
-                          child: BackdropFilter(
-                            filter: prefix0.ImageFilter.blur(
-                              sigmaX: 10.0,
-                              sigmaY: 10.0
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(caption),
-                                  Material(
-                                    
-                                    color: Colors.white.withOpacity(0.0),
-                                    
-                                    child: InkWell(
-                                      splashColor: Colors.amber,
-                                      
-                                      onTap: (){
-                                        Navigator.push(context, PageRouteBuilder(
-                                          transitionDuration: Duration(milliseconds: 500),
-                                          pageBuilder: (context, anim, secondAnim){
-                                            return SearchWorkers(category: caption, employer: widget.employer,);
-                                          },
-                                          transitionsBuilder: (context, anim, secondAnim, child){
-                                            final begin = Offset(1, 0);
-                                            final end = Offset(0, 0);
-                                            final tween = Tween(begin: begin, end: end);
+                      child: Material(
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
+                        color: Colors.white.withOpacity(0.0),
+                        child: InkWell(
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
+                          splashColor: Colors.amber,              
+                          onTap: (){
+                            Navigator.push(context, PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 500),
+                              pageBuilder: (context, anim, secondAnim){
+                                return SearchWorkers(category: caption, employer: widget.employer,);
+                              },
+                              transitionsBuilder: (context, anim, secondAnim, child){
+                                final begin = Offset(1, 0);
+                                final end = Offset(0, 0);
+                                final tween = Tween(begin: begin, end: end);
 
-                                            return SlideTransition(
-                                              position: anim.drive(tween.chain(CurveTween(curve: Curves.decelerate))),
-                                              child: child,
-                                            );
-                                          }
-                                        ));
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 4.0, bottom: 4.0, left: 10.0, right: 10.0),
-                                        child: Text("Find workers"),
-                                      )
+                                return SlideTransition(
+                                  position: anim.drive(tween.chain(CurveTween(curve: Curves.decelerate))),
+                                  child: child,
+                                );
+                              }
+                            ));
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
+                            ),
+                            
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                child: BackdropFilter(
+                                  filter: prefix0.ImageFilter.blur(
+                                    sigmaX: 10.0,
+                                    sigmaY: 10.0
+                                  ),
+                                  child: Container(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text(caption,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white
+                                          ),
+                                        ),
+
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            IconTheme(
+                                              data: IconThemeData(
+                                                color: Colors.white
+                                              ),
+                                              child: Icon(Icons.search),
+                                            ),
+                                            Text("Find workers",
+                                              style: TextStyle(
+                                                color: Colors.white
+                                              ),
+                                            ),
+                                          ],
+                                        )  
+                                      ],
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
