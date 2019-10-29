@@ -38,6 +38,18 @@ class Jobs extends StatelessWidget{
           child: CircularProgressIndicator()
           );
       }
+      else if(!(snapshot.data.length>0)){
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("No jobs available. Please try again later",
+              style: TextStyle(
+                fontSize: 16.0
+              ),
+            ),
+          ),
+        );
+      }
       else {
         if(snapshot.hasError){
           return Center(
