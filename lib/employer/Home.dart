@@ -94,7 +94,6 @@ class CategoriesState extends State<Categories>{
                           splashColor: Colors.amber,              
                           onTap: (){
                             Navigator.push(context, PageRouteBuilder(
-                              transitionDuration: Duration(milliseconds: 500),
                               pageBuilder: (context, anim, secondAnim){
                                 return SearchWorkers(category: caption, employer: widget.employer,);
                               },

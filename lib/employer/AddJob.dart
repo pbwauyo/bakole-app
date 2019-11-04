@@ -1,4 +1,5 @@
 import 'package:bakole/constants/Constants.dart';
+import 'package:bakole/employer/EmployerActivity.dart';
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/httpModels/Worker.dart';
 import 'package:flutter/material.dart';
@@ -229,8 +230,6 @@ class AddJobState extends State<AddJob>{
                                   descriptionTxt: descriptionTxt,
                                   locationTxt: locationTxt,
                                   feeTxt: feeTxt,
-                                  employerEmail: widget.employer.email,
-                                  employerName: widget.employer.lastName,
                                   category: widget.category,
                                   workersList: widget.workersList,
                                 ),
@@ -592,10 +591,10 @@ class PostButton extends StatefulWidget{
   
   final GlobalKey<FormState> formKey;
   final TextEditingController descriptionTxt, locationTxt, feeTxt;
-  final String employerEmail, employerName, category;
+  final String category;
   final List<Worker> workersList;
 
-  PostButton({@required this.formKey, @required this.descriptionTxt, @required this.locationTxt, @required this.feeTxt, @required this.employerEmail, @required this.employerName, @required this.category, @required this.workersList});
+  PostButton({@required this.formKey, @required this.descriptionTxt, @required this.locationTxt, @required this.feeTxt, @required this.category, @required this.workersList});
 
   @override
   _PostButtonState createState() => _PostButtonState();
@@ -625,13 +624,17 @@ class _PostButtonState extends State<PostButton> {
                     onTap: () async{
                       final time = Provider.of<Time>(context);
                       final date = Provider.of<Date>(context);
+                      final Employer employer = Provider.of<EmployerProvider>(context).getEmployer;
 
                       if (time.getTime != "" || date.getDate != ""){
                         print("time and date");
                         if(widget.formKey.currentState.validate()){
+                          
+
                           Job job = Job(
-                            employerName: widget.employerName,
-                            employerEmail: widget.employerEmail,
+                            employerName: employer.lastName,
+                            employerEmail: employer.email,
+                            employerDeviceToken: employer.deviceToken,
                             description: widget.descriptionTxt.text,
                             category: widget.category,
                             fee: widget.feeTxt.text,

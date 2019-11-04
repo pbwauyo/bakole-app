@@ -3,36 +3,83 @@ import 'package:bakole/employer/SearchWorkers.dart';
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/worker/JobPreview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 import 'fragments/trending.dart';
 import 'fragments/cleaning.dart';
 import 'fragments/handyman.dart';
 import 'fragments/moving.dart';
 import './widgets/FormBackground.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main(){
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
+  String deviceToken;
+
+  @override
+  void initState() {
+    super.initState();
+    _configureFirebaseNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     //SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.blue));
 
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(builder: (context){
+          return FirebaseDeviceToken();
+        }),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => FormBackground(),
+          '/home': (context) => HomePage("How can we help you?"), 
+          
+        },
+        debugShowCheckedModeBanner: false,
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => FormBackground(),
-        '/home': (context) => HomePage("How can we help you?"), 
-        
-      },
-      debugShowCheckedModeBanner: false,
     );
   }
+
+  void _configureFirebaseNotifications() {
+
+    _firebaseMessaging.configure(
+      onLaunch: (Map<String, dynamic> message) async{
+        print("Notification received in onLaunch");
+        print(message);
+
+      },
+      onMessage: (Map<String, dynamic> message) async{
+        print("Notification received in onMessage");
+        print(message);
+      },
+      onResume: (Map<String, dynamic> message)async{
+        print("Notification received in onMessage");
+        print(message);
+      },
+      // onBackgroundMessage: (context){
+
+      // }
+    );
+  }
+
 }
 
 class HomePage extends StatelessWidget{
@@ -82,7 +129,15 @@ final tab = TabBar(
   isScrollable: true,
 );
 
+class FirebaseDeviceToken with ChangeNotifier{
+  String _fbToken;
 
+  get firebaseToken{
+    return this._fbToken;
+  }
 
-
-
+ set setFirebaseToken(String token){
+   this._fbToken = token;
+   notifyListeners();
+ }
+}

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "164296600877",
+    "firebase_url": "https://bakole-a06db.firebaseio.com",
+    "project_id": "bakole-a06db",
+    "storage_bucket": "bakole-a06db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164296600877:android:7e0c5a7ec8d1d4dc7977a4",
+        "android_client_info": {
+          "package_name": "com.example.bakole"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164296600877-evq9gsobgctsqts4jeknq695ngn0qr0r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bakole",
+            "certificate_hash": "ce9e7a7a87e6cce83453d2bf98c5f470b20d1b26"
+          }
+        },
+        {
+          "client_id": "164296600877-sd2e5n9h73a2gh0t8pamind83n1e92pt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWHzNVavCCKK6SdcLuyoaDw14ra4Xb-BA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164296600877-sd2e5n9h73a2gh0t8pamind83n1e92pt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

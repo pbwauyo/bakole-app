@@ -1,7 +1,7 @@
 class Employer{
-  final String firstName, lastName, sex, email, phoneNumber, password;
+  final String firstName, lastName, sex, email, phoneNumber, password, deviceToken;
 
-  Employer({this.firstName, this.lastName, this.sex, this.email, this.phoneNumber, this.password});
+  Employer({this.firstName, this.lastName, this.sex, this.email, this.phoneNumber, this.password, this.deviceToken});
 
   factory Employer.fromJson(Map <String, dynamic> json){
     return Employer(
@@ -10,7 +10,8 @@ class Employer{
       sex: json['sex'],
       email: json['email'],
       phoneNumber: json['phoneNumber'],
-      password: json['password']
+      password: json['password'],
+      deviceToken: json['deviceToken']
     );
   }
 
@@ -21,7 +22,8 @@ class Employer{
       "sex": employer.sex,
       "email": employer.email,
       "phoneNumber": employer.phoneNumber,
-      "password": employer.password
+      "password": employer.password,
+      "deviceToken" : employer.deviceToken
     };
   }
 }

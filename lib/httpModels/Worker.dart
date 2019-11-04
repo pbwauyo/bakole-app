@@ -10,8 +10,9 @@ class Worker {
   final String location;
   final String skillStatus;
   final String rating;
+  final String deviceToken;
   
-  Worker({this.id, this.firstName, this.lastName, this.sex, this.category, this.phoneNumber, this.email, this.averagePay, this.location, this.skillStatus, this.rating});
+  Worker({this.id, this.firstName, this.lastName, this.sex, this.category, this.phoneNumber, this.email, this.averagePay, this.location, this.skillStatus, this.rating, this.deviceToken});
 
   factory Worker.fromJson(Map<String, dynamic> map){
     
@@ -26,7 +27,8 @@ class Worker {
       averagePay: map['averagePay'],
       location: map['location'],
       skillStatus: map['skillStatus'],
-      rating: map['rating']
+      rating: map['rating'],
+      deviceToken: map['deviceToken']
     );
     }
 
@@ -41,7 +43,8 @@ class Worker {
         "averagePay" : averagePay,
         "location" : location,
         "skillStatus" : skillStatus,
-        "rating" : rating
+        "rating" : rating,
+        "deviceToken" : deviceToken
       };
    } 
 }

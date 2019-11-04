@@ -4,8 +4,11 @@ import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/httpModels/Worker.dart';
 import 'package:bakole/employer/EmployerActivity.dart';
 import 'package:bakole/worker/WorkerActivity.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:bakole/main.dart';
 
 Future<Map<String, dynamic>> findUser(String email, String password) async{
   final url = "$AWS_SERVER_URL/users/$email/$password";
@@ -46,6 +49,19 @@ Future<Map<String, dynamic>> findUser(String email, String password) async{
   }
 }
 
+ Future<String> _getDeviceToken(FirebaseMessaging _firebaseMessaging, BuildContext context)async{
+    String token = "";
+    try{
+      token = await _firebaseMessaging.getToken();
+      print("token in func: $token");
+      Provider.of<FirebaseDeviceToken>(context).setFirebaseToken = token;
+      return token;
+    }catch (e){
+      print(e);
+      return "";
+    }
+  }
+
 class Login extends StatefulWidget{
   @override
   LoginState createState() {
@@ -57,7 +73,8 @@ class Login extends StatefulWidget{
 class LoginState extends State<Login>{
   final emailTxt = TextEditingController(); 
   final pswdTxt = TextEditingController();
-  final _formKey = GlobalKey<FormState>() ;
+  final _formKey = GlobalKey<FormState>();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool _isLoggingIn = false;
 
   @override
@@ -152,6 +169,7 @@ class LoginState extends State<Login>{
                               setState(() {
                                _isLoggingIn = true; 
                               });
+                              _getDeviceToken(_firebaseMessaging, context);
 
                               if(_formKey.currentState.validate()){
                                 final email = emailTxt.text;
@@ -166,6 +184,8 @@ class LoginState extends State<Login>{
                                   print("userType: ${response["userType"]}");
                                   Navigator.push(context, PageRouteBuilder(
                                     pageBuilder: (context, animation, secondAimation){
+                                      print("token in login: ${Provider.of<FirebaseDeviceToken>(context).firebaseToken}");
+
                                       return WorkerActivity(worker: response["user"],);
                                     },
                                     transitionsBuilder: (context, animation, secondAnimation, child){
@@ -180,6 +200,7 @@ class LoginState extends State<Login>{
 
                                   Navigator.push(context, PageRouteBuilder(
                                     pageBuilder: (context, anim, secondAnim){
+                                      print("token in login: ${Provider.of<FirebaseDeviceToken>(context).firebaseToken}");
                                       Employer employer = response["user"];
                                       return EmployerActivity(employer);
                                     },
