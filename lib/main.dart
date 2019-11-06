@@ -1,7 +1,14 @@
+import 'dart:convert';
+
+import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/employer/AddJob.dart';
+import 'package:bakole/employer/EmployerActivity.dart';
 import 'package:bakole/employer/SearchWorkers.dart';
 import 'package:bakole/httpModels/Employer.dart';
+import 'package:bakole/httpModels/Worker.dart';
+import 'package:bakole/utils/Utils.dart';
 import 'package:bakole/worker/JobPreview.dart';
+import 'package:bakole/worker/WorkerActivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +18,54 @@ import 'fragments/handyman.dart';
 import 'fragments/moving.dart';
 import './widgets/FormBackground.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:http/http.dart' as http;
 
 void main(){
   runApp(MyApp());
+}
+
+Future<Map<String,  dynamic>> _getLoggedInUser() async{
+  final String id = await getPhoneId();
+  final String url = "$AWS_SERVER_URL/users/$id";
+  print("url: $url");
+  var user;
+
+  try{
+    final response = await http.get(url);
+
+    if(response.statusCode == 200){
+      final userType = response.headers["user-type"];
+      final parsedResponse = json.decode(response.body);
+      final list = parsedResponse.cast<Map<String, dynamic>>();
+
+      if(userType == WORKER){
+        user = Worker.fromJson(list[0]);
+
+        return {
+          "user-type" : WORKER,
+          "user" : user
+        };
+      }
+      else if (userType == EMPLOYER){
+        user = Employer.fromJson(list[0]);
+        return {
+          "user-type" : EMPLOYER,
+          "user" : user
+        };
+      }
+      else{
+        return {};
+      }
+    }
+
+    else{
+      return {};
+    }
+  }catch(err){
+    print(err);
+    return {};
+  }
+
 }
 
 class MyApp extends StatefulWidget {
@@ -25,11 +77,13 @@ class _MyAppState extends State<MyApp> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
   String deviceToken;
+  Future<Map<String, dynamic>> loggedInUserFuture;
 
   @override
   void initState() {
     super.initState();
     _configureFirebaseNotifications();
+    loggedInUserFuture = _getLoggedInUser();
   }
 
   @override
@@ -49,7 +103,34 @@ class _MyAppState extends State<MyApp> {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => FormBackground(),
+          '/': (context) => FutureBuilder<Map<String, dynamic>>(
+            future: loggedInUserFuture,
+            builder: (context, snapshot){
+              if(snapshot.data == null){
+                return Scaffold(
+                  body: SafeArea(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
+              }
+              else if(snapshot.data.length == 0){
+                return FormBackground();
+              }
+              else{
+                final user = snapshot.data;
+                if(user["user-type"] == WORKER){
+                  return WorkerActivity(
+                    worker: user["user"],
+                  );
+                }else{
+                  return EmployerActivity(user["user"]);
+                }
+              }
+            }
+
+          ),
           '/home': (context) => HomePage("How can we help you?"), 
           
         },

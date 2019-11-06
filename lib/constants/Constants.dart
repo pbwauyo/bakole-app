@@ -1,4 +1,11 @@
-//const String IP_ADDRESS = "10.10.2.91";
-const String PORT = "3000";
-const String AWS_EC2_INSTANCE = "ec2-18-218-191-0.us-east-2.compute.amazonaws.com";
-const String AWS_SERVER_URL = "http://$AWS_EC2_INSTANCE:$PORT";
+import 'package:http/http.dart' as http;
+
+//const String _LOCAL_IP_ADDRESS = "192.168.1.127";
+const String _LOCAL_IP_ADDRESS = "10.10.2.91";
+const String _PORT = "3000";
+const String _AWS_DNS_ADDRESS = "ec2-18-218-191-0.us-east-2.compute.amazonaws.com";
+const String AWS_SERVER_URL = "http://$_LOCAL_IP_ADDRESS:$_PORT";
+
+const String WORKER = "worker";
+const String EMPLOYER = "employer";
+final httpClient = http.Client();

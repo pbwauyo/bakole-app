@@ -3,18 +3,21 @@ import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/httpModels/Worker.dart';
 import 'package:bakole/employer/EmployerActivity.dart';
+import 'package:bakole/utils/Utils.dart';
 import 'package:bakole/worker/WorkerActivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:bakole/main.dart';
 
+
 Future<Map<String, dynamic>> findUser(String email, String password) async{
-  final url = "$AWS_SERVER_URL/users/$email/$password";
+  final phoneId = await getPhoneId();
+  final url = "$AWS_SERVER_URL/users/$phoneId/$email/$password";
+
   print(url);
   try{
-    final response = await http.get(url);
+    final response = await httpClient.get(url);
     
     if(response.statusCode == 200){
       final List<Map<String, dynamic>> users = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -46,6 +49,23 @@ Future<Map<String, dynamic>> findUser(String email, String password) async{
     print("Exception in finding user");
     print(e);
     throw (e);
+  }
+}
+
+Future<bool> _postDeviceToken(String deviceToken, String email,  String userType) async{
+  final url = "$AWS_SERVER_URL/users/$deviceToken/$email/$userType";
+  try{
+    final response = await httpClient.patch(url);
+
+    if(response.statusCode == 200){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }catch (e){
+    print(e);
+    return false;
   }
 }
 
@@ -169,7 +189,7 @@ class LoginState extends State<Login>{
                               setState(() {
                                _isLoggingIn = true; 
                               });
-                              _getDeviceToken(_firebaseMessaging, context);
+                              final deviceToken = await _getDeviceToken(_firebaseMessaging, context);
 
                               if(_formKey.currentState.validate()){
                                 final email = emailTxt.text;
@@ -180,13 +200,16 @@ class LoginState extends State<Login>{
                                 final tween = Tween(begin: begin, end: end);
                                 final Map<String, dynamic> response = await findUser(email, pswd);
 
-                                if(response["userType"] == "worker"){
+                                if(response["userType"] == WORKER){
+                                  final Worker worker = response["user"];
+                                  await _postDeviceToken(deviceToken, worker.email, WORKER);
+
                                   print("userType: ${response["userType"]}");
                                   Navigator.push(context, PageRouteBuilder(
-                                    pageBuilder: (context, animation, secondAimation){
+                                    pageBuilder: (context, animation, secondAnimation){
                                       print("token in login: ${Provider.of<FirebaseDeviceToken>(context).firebaseToken}");
 
-                                      return WorkerActivity(worker: response["user"],);
+                                      return WorkerActivity(worker: worker,);
                                     },
                                     transitionsBuilder: (context, animation, secondAnimation, child){
                                       return SlideTransition(
@@ -196,12 +219,14 @@ class LoginState extends State<Login>{
                                     },
                                   ));
                                 }
-                                else if (response["userType"] == "employer"){
+                                else if (response["userType"] == EMPLOYER){
+                                  final Employer employer = response["user"];
+                                  await _postDeviceToken(deviceToken, employer.email, EMPLOYER);
 
                                   Navigator.push(context, PageRouteBuilder(
                                     pageBuilder: (context, anim, secondAnim){
                                       print("token in login: ${Provider.of<FirebaseDeviceToken>(context).firebaseToken}");
-                                      Employer employer = response["user"];
+
                                       return EmployerActivity(employer);
                                     },
                                     transitionsBuilder: (context, anim, secondAnim, child){

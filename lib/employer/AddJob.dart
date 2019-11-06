@@ -11,10 +11,11 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 Future<bool> postJob(Job job, List<Worker> workersList) async {
   final String url = "$AWS_SERVER_URL/jobs/";
+  final httpClient = http.Client();
   var task;
   try{
     for (Worker worker in workersList) {
-      task = await http.post("$url/${worker.id}", body: job.toJson());
+      task = await httpClient.post("$url/${worker.id}", body: job.toJson());
       print(task.statusCode);
       if(!(task.statusCode == 200)){
         return false;
