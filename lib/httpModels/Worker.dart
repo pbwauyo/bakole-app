@@ -46,5 +46,12 @@ class Worker {
         "rating" : rating,
         "deviceToken" : deviceToken
       };
-   } 
+   }
+
+  bool ratingExists(){
+    if(this.rating != null && double.parse(this.rating) > 0.0){
+      return true;
+    }
+    else return false;
+  }
 }

@@ -6,6 +6,7 @@ import 'package:bakole/employer/EmployerActivity.dart';
 import 'package:bakole/utils/Utils.dart';
 import 'package:bakole/worker/WorkerActivity.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bakole/main.dart';
@@ -96,6 +97,7 @@ class LoginState extends State<Login>{
   final _formKey = GlobalKey<FormState>();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool _isLoggingIn = false;
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context){
@@ -141,6 +143,7 @@ class LoginState extends State<Login>{
               Container(
                 margin: EdgeInsets.only(bottom: 5),
                 child: Card(
+
                   shape: RoundedRectangleBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(radius))
                   ),
@@ -155,7 +158,8 @@ class LoginState extends State<Login>{
                         return null;
                       },
                       controller: pswdTxt,
-                      obscureText: true,
+                      obscureText: _obscureText,
+
                       decoration: InputDecoration(
                         labelText: "Password",
                         border: InputBorder.none,
@@ -163,6 +167,31 @@ class LoginState extends State<Login>{
                           data: IconThemeData(size: 25.0, color: Colors.cyan),
                           child: Icon(Icons.lock),
                         ),
+                        suffixIcon: Material(
+
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                          child: InkWell(
+                            borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                            splashColor: Colors.black12,
+                            onTap: (){
+                              setState(() {
+                                if(_obscureText){
+                                  _obscureText = false;
+                                }
+                                else{
+                                  _obscureText = true;
+                                }
+                              });
+                            },
+                            child: IconTheme(
+                              data: IconThemeData(
+                                size: 24.0
+                              ),
+                              child: Icon(Icons.remove_red_eye),
+                            ),
+                          ),
+                        )
                       ),
                     ),
                   ),

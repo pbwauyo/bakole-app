@@ -1,4 +1,5 @@
 import 'package:bakole/httpModels/Worker.dart';
+import 'package:bakole/utils/Utils.dart';
 import 'package:bakole/worker/Home.dart';
 import 'package:bakole/worker/History.dart';
 import 'package:bakole/worker/Jobs.dart';
@@ -16,6 +17,7 @@ class WorkerActivity extends StatefulWidget{
 
 class WorkerActivityState extends State<WorkerActivity>{
   final List<String> tabTitles = ["Home", "History", "Jobs", "Profile"];
+  final SIGN_OUT = "Sign out";
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +29,35 @@ class WorkerActivityState extends State<WorkerActivity>{
         ChangeNotifierProvider(builder: (_) => WorkerProvider(worker: widget.worker))
       ],
       
-      child: Scaffold(
-        appBar: AppBar(
-          title: Consumer<TabIndex>(
-            builder: (context, tabIndex, _){
-              return Text(tabTitles[tabIndex.tabIndex]);
-            },
-            
+      child: Consumer<TabIndex>(
+        builder: (context,tabIndex, _) => Scaffold(
+          appBar: AppBar(
+            title: Text(tabTitles[tabIndex.tabIndex]),
+            actions: <Widget>[
+              Visibility(
+                visible: tabIndex.tabIndex == 3, //only show if on Profile tab
+                child: PopupMenuButton<String>(
+                    onSelected: (value) async{
+                      final phoneId = await getPhoneId();
+                      await signOut(phoneId);
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    },
+                    itemBuilder: (context){
+                      return <PopupMenuItem<String>>[
+                        PopupMenuItem<String>(
+                          value: SIGN_OUT,
+                          child: Text(SIGN_OUT),
+                        ),
+                      ];
+                    }
+                ),
+              )
+            ],
+
           ),
+          body: Body(),
+          bottomNavigationBar: BottomNavBar(),
         ),
-        body: Body(),
-        bottomNavigationBar: BottomNavBar(),
       ),
       
     );
@@ -53,8 +73,8 @@ class BodyState extends State<Body>{
   
   final List<Widget>  widgets = [Consumer<WorkerProvider>(builder: (_, workerProvider, __) => Home(worker: workerProvider.worker,),), 
                                  History(), 
-                                 Consumer<WorkerProvider>(builder: (_, workerProvider, __) => Jobs(workerId: workerProvider.worker.id,)), 
-                                 Profile()];
+                                 Consumer<WorkerProvider>(builder: (_, workerProvider, __) => Jobs(workerId: workerProvider.worker.id,)),
+                                 Consumer<WorkerProvider>(builder: (_, workerProvider, __) => Profile(worker: workerProvider.worker,),)];
  
   @override
   build(context) => Consumer<TabIndex>(

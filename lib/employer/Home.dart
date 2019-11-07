@@ -24,20 +24,12 @@ class HomeState extends State<Home>{
   build(context){ 
     items = buildItems();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("How can we help you?"),
-      ),
-      body: SafeArea(
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(items.length, (index){  
-            return Categories(items.elementAt(index).image, items.elementAt(index).caption, employer: Provider.of<EmployerProvider>(context).employer,);
-          }),
-        ),
-      ),
-
-    );
+    return GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(items.length, (index){
+          return Categories(items.elementAt(index).image, items.elementAt(index).caption, employer: Provider.of<EmployerProvider>(context).employer,);
+        }),
+      );
   }
 
   List<Item> buildItems(){

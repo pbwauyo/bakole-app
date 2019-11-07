@@ -1,7 +1,12 @@
+import 'package:bakole/httpModels/Worker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class Profile extends StatefulWidget{
+
+  final Worker worker;
+
+  Profile({@required this.worker});
 
   @override
   createState ()=> ProfileState();
@@ -42,7 +47,7 @@ class ProfileState extends State<Profile>{
                         Container(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0, top: 15.0),
-                            child: Text("Peter Wauyo",
+                            child: Text(widget.worker.lastName,
                               style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold
@@ -54,7 +59,7 @@ class ProfileState extends State<Profile>{
 
                         Container(
                           margin: EdgeInsets.only(left: 8.0),
-                          child: Text("pbwauyo@gmail.com"),
+                          child: Text(widget.worker.email),
                         ),
                       ],
                     ),
@@ -130,7 +135,7 @@ class ProfileState extends State<Profile>{
             glow: true,
             glowRadius: 3.0,
             glowColor: Colors.white,
-            initialRating: 4.5,
+            initialRating: widget.worker.ratingExists() ? double.parse(widget.worker.rating) : 0.0,
             allowHalfRating: true,
             ignoreGestures: true,
             itemSize: 25.0,

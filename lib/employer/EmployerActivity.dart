@@ -1,10 +1,14 @@
+import 'package:bakole/employer/Profile.dart';
 import 'package:bakole/httpModels/Employer.dart';
+import 'package:bakole/utils/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'AddJob.dart';
 import 'Home.dart';
 import 'searchJobs.dart';
 import 'ViewJobs.dart';
+
+
 
 class EmployerActivity extends StatefulWidget{
   EmployerActivity(this.employer);
@@ -16,16 +20,42 @@ class EmployerActivity extends StatefulWidget{
 
 class EmployerActivityState extends State<EmployerActivity>{
   var _index = 0;
-  final widgets = <Widget>[Consumer<EmployerProvider>(builder: (_, employerProvider,__) => Home(employer: employerProvider.employer)), 
-                            Consumer<EmployerProvider>(builder: (_, employerProvider, __) => AddJob(employer: employerProvider.employer)), 
+
+  final widgets = <Widget>[Consumer<EmployerProvider>(builder: (_, employerProvider,__) => Home(employer: employerProvider.employer)),
                             ViewJobs(), 
-                            SearchJobs()];
+                            SearchJobs(),
+                            Consumer<EmployerProvider>(builder: (_, employerProvider, __) => Profile(employer: employerProvider.employer)),];
+  final appBarTitles = <String>["How can we help you?", "Job history", "","Your Profile"];
+  // ignore: non_constant_identifier_names
+  final SIGN_OUT = "Sign out";
   
   @override
-  Widget build(context) { 
-    
+  Widget build(context) {
     
     return Scaffold(
+      appBar: AppBar(
+        title: Text(appBarTitles[_index]),
+        actions: <Widget>[
+          Visibility(
+            visible: _index == 3, //only show if on Profile tab
+            child: PopupMenuButton<String>(
+                onSelected: (value) async{
+                  final phoneId = await getPhoneId();
+                  await signOut(phoneId);
+                  Navigator.of(context).pushReplacementNamed('/login');
+                },
+                itemBuilder: (context){
+                  return <PopupMenuItem<String>>[
+                    PopupMenuItem<String>(
+                      value: SIGN_OUT,
+                      child: Text(SIGN_OUT),
+                    ),
+                  ];
+              }
+            ),
+          )
+        ],
+      ),
       body: ChangeNotifierProvider(
         builder: (context) => EmployerProvider(employer: widget.employer),
         child: SafeArea(
@@ -55,16 +85,6 @@ class EmployerActivityState extends State<EmployerActivity>{
             ),
 
             BottomNavigationBarItem(
-              
-              icon: Icon(
-                Icons.add,
-              ),
-              title: Text(
-                "Post Job",
-              ),
-            ),
-
-            BottomNavigationBarItem(
               icon: Icon(
                 Icons.view_headline,
               ),
@@ -79,6 +99,16 @@ class EmployerActivityState extends State<EmployerActivity>{
               ),
               title: Text(
                 "Search jobs",
+              ),
+            ),
+
+            BottomNavigationBarItem(
+
+              icon: Icon(
+                Icons.person,
+              ),
+              title: Text(
+                "Profile",
               ),
             ),
           ],

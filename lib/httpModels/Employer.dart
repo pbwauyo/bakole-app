@@ -1,7 +1,7 @@
 class Employer{
-  final String firstName, lastName, sex, email, phoneNumber, password, deviceToken;
+  final String firstName, lastName, sex, email, phoneNumber, password, deviceToken, rating;
 
-  Employer({this.firstName, this.lastName, this.sex, this.email, this.phoneNumber, this.password, this.deviceToken});
+  Employer({this.firstName, this.lastName, this.sex, this.email, this.phoneNumber, this.password, this.deviceToken, this.rating});
 
   factory Employer.fromJson(Map <String, dynamic> json){
     return Employer(
@@ -11,7 +11,8 @@ class Employer{
       email: json['email'],
       phoneNumber: json['phoneNumber'],
       password: json['password'],
-      deviceToken: json['deviceToken']
+      deviceToken: json['deviceToken'],
+      rating: json['rating']
     );
   }
 
@@ -23,7 +24,15 @@ class Employer{
       "email": employer.email,
       "phoneNumber": employer.phoneNumber,
       "password": employer.password,
-      "deviceToken" : employer.deviceToken
+      "deviceToken" : employer.deviceToken,
+      "rating" : employer.rating
     };
+  }
+
+  bool ratingExists(){
+    if(this.rating != null && double.parse(this.rating) > 0.0){
+      return true;
+    }
+    else return false;
   }
 }
