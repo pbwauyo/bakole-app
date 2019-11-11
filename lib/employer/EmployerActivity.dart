@@ -1,5 +1,8 @@
+import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/employer/Profile.dart';
 import 'package:bakole/httpModels/Employer.dart';
+import 'package:bakole/httpModels/EmployerJob.dart';
+import 'package:bakole/httpModels/Job.dart';
 import 'package:bakole/utils/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,8 +10,6 @@ import 'AddJob.dart';
 import 'Home.dart';
 import 'searchJobs.dart';
 import 'ViewJobs.dart';
-
-
 
 class EmployerActivity extends StatefulWidget{
   EmployerActivity(this.employer);
@@ -20,9 +21,8 @@ class EmployerActivity extends StatefulWidget{
 
 class EmployerActivityState extends State<EmployerActivity>{
   var _index = 0;
-
   final widgets = <Widget>[Consumer<EmployerProvider>(builder: (_, employerProvider,__) => Home(employer: employerProvider.employer)),
-                            ViewJobs(), 
+                            Consumer<EmployerProvider>(builder: (_, employerProvider, __) => ViewJobs(email: employerProvider.employer.email)),
                             SearchJobs(),
                             Consumer<EmployerProvider>(builder: (_, employerProvider, __) => Profile(employer: employerProvider.employer)),];
   final appBarTitles = <String>["How can we help you?", "Job history", "","Your Profile"];

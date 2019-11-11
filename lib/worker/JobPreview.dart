@@ -1,7 +1,38 @@
 import 'package:bakole/clippers/RectClipper.dart';
+import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/httpModels/Job.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+Future acceptJob(Job job) async {
+  final String url = "$AWS_SERVER_URL/jobs/";
+
+  try {
+    final response = await httpClient.post(url);
+
+    if (response.statusCode == 200) {
+
+    }
+  }
+  catch(err){
+    print(err);
+  }
+}
+
+Future declineJob(Job job) async {
+  final String url = "$AWS_SERVER_URL/jobs/";
+
+  try {
+    final response = await httpClient.post(url);
+
+    if (response.statusCode == 200) {
+
+    }
+  }
+  catch(err){
+    print(err);
+  }
+}
 
 class JobPreview extends StatelessWidget{
   

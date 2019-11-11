@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/employer/EmployerActivity.dart';
 import 'package:bakole/httpModels/Employer.dart';
+import 'package:bakole/httpModels/EmployerJob.dart';
 import 'package:bakole/httpModels/Worker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,20 +12,37 @@ import '../httpModels/Job.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-Future<bool> postJob(Job job, List<Worker> workersList) async {
+Future<bool> postJob(Job job, EmployerJob employerJob, List<Worker> workersList) async {
+  final String employerUrl = "$AWS_SERVER_URL/employers/jobs";
   final String url = "$AWS_SERVER_URL/jobs/";
-  final httpClient = http.Client();
+  final Map<String, String> headers = {
+    "Content-Type": "application/json"
+  };
+
   var task;
+  var task2;
   try{
-    for (Worker worker in workersList) {
-      task = await httpClient.post("$url/${worker.id}", body: job.toJson());
-      print(task.statusCode);
-      if(!(task.statusCode == 200)){
-        return false;
+
+    print(json.encode(employerJob.toJson()));
+
+    task2 = await httpClient.post(employerUrl, headers: headers, body: json.encode(employerJob.toJson()));
+
+    print(task2.statusCode);
+    if(task2.statusCode == 200){
+      for (Worker worker in workersList) {
+        task = await httpClient.post("$url/${worker.id}", body: job.toJson());
+
+        print(task.statusCode);
+        if(!(task.statusCode == 200)){
+          return false;
+        }
       }
+      return true;
     }
-    return true;
-    
+    else{
+      return false;
+    }
+
   }catch(e){
     print(e);
     return false;
@@ -52,6 +72,7 @@ class AddJobState extends State<AddJob>{
   
   @override 
   Widget build(BuildContext context){
+
 
     return Scaffold(
               appBar: AppBar(
@@ -233,6 +254,7 @@ class AddJobState extends State<AddJob>{
                                   feeTxt: feeTxt,
                                   category: widget.category,
                                   workersList: widget.workersList,
+                                  employer: widget.employer,
                                 ),
                               ),
                             ],
@@ -254,156 +276,156 @@ class AddJobState extends State<AddJob>{
   }
 }
 
-class Tasks extends StatefulWidget{
-
-  @override
-  TasksState createState() {
-    return TasksState();
-  }
-}
-
-class TasksState extends State<Tasks>{
-  int taskCount = 0;
-  final List<String> tasksList = [];
-
-  @override
-  Widget build(BuildContext context) {
-    
-    return Container(
-      
-      width: double.infinity,
-      child: Column(
-        
-        children: <Widget>[
-          Row( 
-            children: <Widget>[
-              Flexible(
-                fit: FlexFit.loose,
-                child: Container(
-                  color: Colors.blue[300],
-                  child: Center(
-                    child: Icon(Icons.add),
-                  )
-                ),
-              )
-            ],
-          ),
-
-          taskCount==0 ? 
-          Container():
-          Container(
-            child: Card(
-
-            ),
-          ),
-        ],
-      ),
-
-    );
-  }
-}
-
-class TaskBody extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-   
-    return Container(
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.done_outline),
-          TextFormField(
-            
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-//not used yet
-class CategoriesMenu extends StatefulWidget{
-  @override
-  createState()=>CategoriesMenuState();
-}
-
-class CategoriesMenuState extends State<CategoriesMenu>{
-  var _dropDownValue = 1;
-
-  @override
-  Widget build(BuildContext context){
-
-    return Container(
-            height: 80,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
-            ),
-
-            child: Align(
-              alignment: Alignment.center,
-              child: Material(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                      ),
-                      elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<int>(  
-                            value: _dropDownValue,
-                            isExpanded: true,
-                            onChanged: (int value){
-                              setState(
-                                (){
-                                  _dropDownValue = value;
-                                }
-                              );
-                            },
-                            
-                            hint: Text("Please select an option"),
-                            items: [
-                              DropdownMenuItem(
-                                value: 1,
-                                child: Text("Warehousing"),
-                              ),
-
-                              DropdownMenuItem(
-                                value: 2,
-                                child: Text("Driving & Delivery"),
-                              ),
-
-                              DropdownMenuItem<int>(
-                                value: 3,
-                                child: Text("Washing & Cleaning"),
-                              ),
-
-                              DropdownMenuItem<int>(
-                                value: 4,
-                                child: Text("Stocking"),
-                              ),
-
-                              DropdownMenuItem<int>(
-                                value: 5,
-                                child: Text("Painting"),
-                              ),
-
-                              DropdownMenuItem<int>(
-                                value: 6,
-                                child: Text("Other"),
-                              ),
-                            ]
-                    ),
-                        ),
-                      ),
-              ),
-            ),
-        );
-  }
-  
-}
+//class Tasks extends StatefulWidget{
+//
+//  @override
+//  TasksState createState() {
+//    return TasksState();
+//  }
+//}
+//
+//class TasksState extends State<Tasks>{
+//  int taskCount = 0;
+//  final List<String> tasksList = [];
+//
+//  @override
+//  Widget build(BuildContext context) {
+//
+//    return Container(
+//
+//      width: double.infinity,
+//      child: Column(
+//
+//        children: <Widget>[
+//          Row(
+//            children: <Widget>[
+//              Flexible(
+//                fit: FlexFit.loose,
+//                child: Container(
+//                  color: Colors.blue[300],
+//                  child: Center(
+//                    child: Icon(Icons.add),
+//                  )
+//                ),
+//              )
+//            ],
+//          ),
+//
+//          taskCount==0 ?
+//          Container():
+//          Container(
+//            child: Card(
+//
+//            ),
+//          ),
+//        ],
+//      ),
+//
+//    );
+//  }
+//}
+//
+//class TaskBody extends StatelessWidget{
+//  @override
+//  Widget build(BuildContext context) {
+//
+//    return Container(
+//      child: Row(
+//        children: <Widget>[
+//          Icon(Icons.done_outline),
+//          TextFormField(
+//
+//          ),
+//        ],
+//      ),
+//    );
+//  }
+//}
+//
+//
+////not used yet
+//class CategoriesMenu extends StatefulWidget{
+//  @override
+//  createState()=>CategoriesMenuState();
+//}
+//
+//class CategoriesMenuState extends State<CategoriesMenu>{
+//  var _dropDownValue = 1;
+//
+//  @override
+//  Widget build(BuildContext context){
+//
+//    return Container(
+//            height: 80,
+//            decoration: BoxDecoration(
+//              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+//            ),
+//
+//            child: Align(
+//              alignment: Alignment.center,
+//              child: Material(
+//                      shape: RoundedRectangleBorder(
+//                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+//                      ),
+//                      elevation: 3,
+//                      child: Padding(
+//                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+//                        child: DropdownButtonHideUnderline(
+//                          child: DropdownButton<int>(
+//                            value: _dropDownValue,
+//                            isExpanded: true,
+//                            onChanged: (int value){
+//                              setState(
+//                                (){
+//                                  _dropDownValue = value;
+//                                }
+//                              );
+//                            },
+//
+//                            hint: Text("Please select an option"),
+//                            items: [
+//                              DropdownMenuItem(
+//                                value: 1,
+//                                child: Text("Warehousing"),
+//                              ),
+//
+//                              DropdownMenuItem(
+//                                value: 2,
+//                                child: Text("Driving & Delivery"),
+//                              ),
+//
+//                              DropdownMenuItem<int>(
+//                                value: 3,
+//                                child: Text("Washing & Cleaning"),
+//                              ),
+//
+//                              DropdownMenuItem<int>(
+//                                value: 4,
+//                                child: Text("Stocking"),
+//                              ),
+//
+//                              DropdownMenuItem<int>(
+//                                value: 5,
+//                                child: Text("Painting"),
+//                              ),
+//
+//                              DropdownMenuItem<int>(
+//                                value: 6,
+//                                child: Text("Other"),
+//                              ),
+//                            ]
+//                    ),
+//                        ),
+//                      ),
+//              ),
+//            ),
+//        );
+//  }
+//
+//}
 
 class DateTimeWidget extends StatelessWidget{
-  final DateFormat dateformat = DateFormat("dd - MM - yyyy");
+  final DateFormat dateFormat = DateFormat("dd - MM - yyyy");
   final DateFormat timeFormat = DateFormat("hh : mm a");
 
   @override
@@ -458,7 +480,7 @@ class DateTimeWidget extends StatelessWidget{
                             currentTime: DateTime.now(),
                             showTitleActions: true,
                             onConfirm: (date){
-                              _date.date = dateformat.format(date);
+                              _date.date = dateFormat.format(date);
                             }
                           );
                         },
@@ -594,8 +616,9 @@ class PostButton extends StatefulWidget{
   final TextEditingController descriptionTxt, locationTxt, feeTxt;
   final String category;
   final List<Worker> workersList;
+  final Employer employer;
 
-  PostButton({@required this.formKey, @required this.descriptionTxt, @required this.locationTxt, @required this.feeTxt, @required this.category, @required this.workersList});
+  PostButton({@required this.formKey, @required this.descriptionTxt, @required this.locationTxt, @required this.feeTxt, @required this.category, @required this.workersList, @required this.employer});
 
   @override
   _PostButtonState createState() => _PostButtonState();
@@ -625,7 +648,7 @@ class _PostButtonState extends State<PostButton> {
                     onTap: () async{
                       final time = Provider.of<Time>(context);
                       final date = Provider.of<Date>(context);
-                      final Employer employer = Provider.of<EmployerProvider>(context).getEmployer;
+                      final Employer employer = widget.employer;
 
                       if (time.getTime != "" || date.getDate != ""){
                         print("time and date");
@@ -644,20 +667,25 @@ class _PostButtonState extends State<PostButton> {
                             startDate: date.getDate
                           );
 
+                          EmployerJob employerJob = EmployerJob(
+                            status: Status.ACTIVE,
+                            job: job
+                          );
+
                           print(job.toString());
 
                           setState(() {
                             _isLoading = true;
                           });
                           
-                          bool isSuccess = await postJob(job, widget.workersList);
+                          final bool isSuccess = await postJob(job, employerJob, widget.workersList);
 
                           if(isSuccess){
                             setState(() {
                               _isLoading = false;
                               Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text("Success!"),
-                                duration: Duration(seconds: 2),
+                                duration: Duration(seconds: 4),
                                 backgroundColor: Colors.amber,
                               ));
 
@@ -671,7 +699,7 @@ class _PostButtonState extends State<PostButton> {
                               _isLoading = false; 
                               Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text("Failure!"),
-                                duration: Duration(seconds: 2),
+                                duration: Duration(seconds: 4),
                               )); 
                             });
                           }

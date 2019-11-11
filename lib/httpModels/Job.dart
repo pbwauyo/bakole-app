@@ -26,7 +26,7 @@ class Job {
     );
   }
 
-  Map<String, String> toJson(){
+  Map<String, dynamic> toJson(){
     return {
       'employerName' : employerName,
       'employerEmail' : employerEmail,
@@ -43,7 +43,7 @@ class Job {
   @override
   String toString() {
     
-    return "\n employerName: $employerName\n employerEmail: $employerEmail\n description: $description\n category: $category fee: $fee\n place: $location\n startTime: $startTime\n startDate: $startDate\n";
+    return "\n employerName: $employerName\n employerEmail: $employerEmail\n description: $description\n category: $category\n fee: $fee\n place: $location\n startTime: $startTime\n startDate: $startDate\n";
   }
 
 
