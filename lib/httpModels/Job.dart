@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
+
 class Job {
+  String id;
+  String workerId;
   final String employerName;
   final String employerEmail;
   final String employerDeviceToken;
@@ -9,11 +13,13 @@ class Job {
   final String startTime;
   final String startDate;
 
-  Job({this.employerName, this.employerEmail, this.employerDeviceToken, this.description, this.category, this.fee, this.location, this.startTime, this.startDate});
+  Job({@required this.id, this.workerId, this.employerName, this.employerEmail, this.employerDeviceToken, this.description, this.category, this.fee, this.location, this.startTime, this.startDate});
 
   factory Job.fromJson(Map<String, dynamic> map){
   
     return Job(
+      id: map['jobId'],
+      workerId: map['workerId'],
       employerName: map['employerName'],
       employerEmail: map['employerEmail'],
       employerDeviceToken: map['employerDeviceToken'],
@@ -28,6 +34,8 @@ class Job {
 
   Map<String, dynamic> toJson(){
     return {
+      "id" : id,
+      "workerId" : workerId,
       'employerName' : employerName,
       'employerEmail' : employerEmail,
       'employerDeviceToken' : employerDeviceToken,
@@ -43,9 +51,22 @@ class Job {
   @override
   String toString() {
     
-    return "\n employerName: $employerName\n employerEmail: $employerEmail\n description: $description\n category: $category\n fee: $fee\n place: $location\n startTime: $startTime\n startDate: $startDate\n";
+    return "\n jobId : $getJobId\n employerName: $employerName\n employerEmail: $employerEmail\n description: $description\n category: $category\n fee: $fee\n place: $location\n startTime: $startTime\n startDate: $startDate\n";
   }
 
+  String get getWorkerId{
+    return this.workerId;
+  }
 
+  set setWorkerId(String id){
+    this.workerId = id;
+  }
 
+  String  get getJobId{
+    return this.id;
+  }
+
+  set setJobId(String id){
+    this.id = id;
+  }
 }

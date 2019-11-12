@@ -52,3 +52,30 @@ class FadedLine extends StatelessWidget{
     );
   }
 }
+
+class Dot extends StatelessWidget{
+  final int statusIndex;
+  final List<Color> colors = [Colors.orange, Colors.green];
+
+  Dot({@required this.statusIndex});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.0),
+          color: colors[statusIndex]
+      ),
+    );
+  }
+}
+
+String capitaliseFirstLetter(String string){
+  String str1 = string[0];
+  String str2 = string.substring(1);
+
+  return str1.toUpperCase() + str2.toLowerCase();
+}

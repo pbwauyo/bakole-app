@@ -9,9 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:bakole/main.dart';
+import 'package:uuid/uuid.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final String jobId = Uuid().v1().toString();
+    print("jobId");
+    print(jobId);
+
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 

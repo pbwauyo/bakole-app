@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../httpModels/Job.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:uuid/uuid.dart';
 
 Future<bool> postJob(Job job, EmployerJob employerJob, List<Worker> workersList) async {
   final String employerUrl = "$AWS_SERVER_URL/employers/jobs";
@@ -30,7 +31,8 @@ Future<bool> postJob(Job job, EmployerJob employerJob, List<Worker> workersList)
     print(task2.statusCode);
     if(task2.statusCode == 200){
       for (Worker worker in workersList) {
-        task = await httpClient.post("$url/${worker.id}", body: job.toJson());
+        job.setWorkerId = worker.id;
+        task = await httpClient.post(url, body: job.toJson());
 
         print(task.statusCode);
         if(!(task.statusCode == 200)){
@@ -68,7 +70,6 @@ class AddJobState extends State<AddJob>{
   final feeTxt = TextEditingController(); 
   final locationTxt = TextEditingController();
   final descriptionTxt = TextEditingController();
-  
   
   @override 
   Widget build(BuildContext context){
@@ -649,13 +650,14 @@ class _PostButtonState extends State<PostButton> {
                       final time = Provider.of<Time>(context);
                       final date = Provider.of<Date>(context);
                       final Employer employer = widget.employer;
+                      final String jobId = Uuid().v1().toString();
 
                       if (time.getTime != "" || date.getDate != ""){
                         print("time and date");
                         if(widget.formKey.currentState.validate()){
-                          
 
                           Job job = Job(
+                            id: jobId,
                             employerName: employer.lastName,
                             employerEmail: employer.email,
                             employerDeviceToken: employer.deviceToken,

@@ -3,11 +3,13 @@ import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/employer/AddJob.dart';
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/employer/WorkerInfo.dart';
+import 'package:bakole/utils/Utils.dart';
 import 'package:flutter/material.dart';
 import '../httpModels/Worker.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Worker>> getWorkers(String query) async{
+  final editedQuery = capitaliseFirstLetter(query);
 
   Map<String, String> requestHeaders = {
        'Content-type': 'application/json',
@@ -16,12 +18,13 @@ Future<List<Worker>> getWorkers(String query) async{
 
   print("Future start");
   
-  final url = "$AWS_SERVER_URL/workers/";
+  final url = "$AWS_SERVER_URL/workers/$editedQuery";
 
   try{
     print("before await");
 
-    final response = await http.get(url+query, headers: requestHeaders);
+
+    final response = await http.get(url, headers: requestHeaders);
     print("response status code");
     print(response.statusCode);
     
