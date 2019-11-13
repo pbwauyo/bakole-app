@@ -127,8 +127,10 @@ class JobDetailsState extends State<JobDetails>{
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (context, index){
+              final Worker worker = snapshot.data[index]["worker"];
               final Job job = snapshot.data[index]["job"];
-              return ListRow(job: job);
+
+              return ListRow(job: job, worker: worker,);
             }
         );
         }
@@ -141,19 +143,21 @@ class JobDetailsState extends State<JobDetails>{
 //this will be the row for each job in the list
 class ListRow extends StatefulWidget{
   final Job job;
-  ListRow({@required this.job});
+  final Worker worker;
+  ListRow({@required this.job, @required this.worker});
 
   @override
   State<ListRow> createState() {
 
-    return  ListRowState(job: job);
+    return  ListRowState(job: job, worker: worker);
   }
 }
 
 class ListRowState extends State<ListRow>{
   final Job job;
+  final Worker worker;
 
-  ListRowState({@required this.job});
+  ListRowState({@required this.job, @required this.worker});
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +202,7 @@ class ListRowState extends State<ListRow>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Text("Wash the tyres clean",
+                          Text(job.description,
                             maxLines: 1,
                             style: TextStyle(
                                 fontSize: 15.0,
@@ -207,10 +211,10 @@ class ListRowState extends State<ListRow>{
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                            child: Text("jhashj234jk3049io2j3xcz9k4n",
+                            child: Text(job.getWorkerId,
                             maxLines: 1,),
                           ),
-                          Text("Nakate Shamim",
+                          Text(worker.lastName,
                           maxLines: 1,)
                         ],
                       )
@@ -223,23 +227,17 @@ class ListRowState extends State<ListRow>{
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(left: 8.0, bottom: 5.0),
+                        padding: const EdgeInsets.only(left: 8.0, bottom: 5.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             //check icon
                             Container(
-                              padding: EdgeInsets.only(right: 5.0),
-                              child: IconTheme(
-                                data: IconThemeData(
-                                  color: Colors.green,
-                                  size: 15
-                                ),
-                                child: Icon(Icons.check_circle),
-                              ),
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: StatusIcon(job.status),
                             ),
 
-                            Text("Accepted",
+                            Text(job.status == null || job.status == "" ? Status.PENDING : capitaliseFirstLetter(job.status),
                               style: TextStyle(fontSize: 14.0),
                             )
                           ],
@@ -281,4 +279,43 @@ class ListRowState extends State<ListRow>{
       ),
     );
   }
+}
+
+class StatusIcon extends StatelessWidget{
+  final String status;
+
+  StatusIcon(this.status);
+
+  @override
+  Widget build(BuildContext context) {
+      if(status.toLowerCase() == Status.ACCEPTED.toLowerCase()){
+        return IconTheme(
+          data: IconThemeData(
+            color: Colors.green,
+            size: 15
+          ),
+          child: Icon(Icons.check_circle),
+        );
+      }
+      else if(status.toLowerCase() == Status.DECLINED.toLowerCase()){
+        return IconTheme(
+          data: IconThemeData(
+              color: Colors.red,
+              size: 15
+          ),
+          child: Icon(Icons.cancel),
+        );
+      }
+      else{
+        return IconTheme(
+          data: IconThemeData(
+              color: Colors.orange,
+              size: 15
+          ),
+          child: Icon(Icons.error),
+        );
+      }
+
+  }
+
 }

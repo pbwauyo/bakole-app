@@ -80,7 +80,7 @@ class JobList extends StatelessWidget{
     return ListView.builder(
       itemCount: jobs.length,
       itemBuilder: (context, index){
-        return JobRow(jobs[index]);
+        return JobRow(jobs[index], index);
       },
       
     );
@@ -89,7 +89,8 @@ class JobList extends StatelessWidget{
 
 class JobRow extends StatelessWidget{
   final Job job;
-  JobRow(this.job);
+  final int index;
+  JobRow(this.job, this.index);
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +113,7 @@ class JobRow extends StatelessWidget{
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context){
-                    return JobPreview(job: job,);
+                    return JobPreview(job: job, index: index,);
                   },
                 )
               );
@@ -126,7 +127,7 @@ class JobRow extends StatelessWidget{
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Hero(
-                        tag: "avatar",
+                        tag: "avatar$index",
                         child: CircleAvatar(
                           backgroundImage: AssetImage("assets/images/default_pic.png"),
                           radius: 30.0,

@@ -125,7 +125,7 @@ class ViewJobsState extends State<ViewJobs>{
                     splashColor: Colors.black12,
                     onTap: (){
                       Navigator.of(context).push(MaterialPageRoute<JobDetails>(
-                        builder: (context) => JobDetails(jobId: employerJob.job.id,)
+                        builder: (context) => JobDetails(jobId: employerJob.job.jobId,)
                       ));
                     },
                     child: Stack(

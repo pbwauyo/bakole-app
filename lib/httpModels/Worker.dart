@@ -54,4 +54,9 @@ class Worker {
     }
     else return false;
   }
+
+//  String formatWorkerName(String fName, String lName){
+//    if(fName == "")
+//
+//  }
 }

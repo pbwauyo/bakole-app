@@ -657,7 +657,7 @@ class _PostButtonState extends State<PostButton> {
                         if(widget.formKey.currentState.validate()){
 
                           Job job = Job(
-                            id: jobId,
+                            jobId: jobId,
                             employerName: employer.lastName,
                             employerEmail: employer.email,
                             employerDeviceToken: employer.deviceToken,

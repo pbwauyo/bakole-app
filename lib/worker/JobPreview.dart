@@ -1,46 +1,67 @@
 import 'package:bakole/clippers/RectClipper.dart';
 import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/httpModels/Job.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-Future acceptJob(Job job) async {
-  final String url = "$AWS_SERVER_URL/jobs/";
+Future<bool> acceptJob(String id) async {
+  final String url = "$AWS_SERVER_URL/jobs/accept/$id";
 
   try {
     final response = await httpClient.post(url);
-
     if (response.statusCode == 200) {
-
+      return true;
+    }
+    else{
+      return false;
     }
   }
   catch(err){
     print(err);
+    return false;
   }
 }
 
-Future declineJob(Job job) async {
-  final String url = "$AWS_SERVER_URL/jobs/";
+Future declineJob(String id) async {
+  final String url = "$AWS_SERVER_URL/jobs/decline/$id";
 
   try {
     final response = await httpClient.post(url);
-
     if (response.statusCode == 200) {
-
+      return true;
+    }
+    else{
+      return false;
     }
   }
   catch(err){
     print(err);
+    return false;
   }
 }
 
-class JobPreview extends StatelessWidget{
+class JobPreview extends StatefulWidget{
   
   final Job job;
-  JobPreview({@required this.job});
+  final int index;
+  JobPreview({@required this.job, @required this.index});
+
+  @override
+  _JobPreviewState createState() => _JobPreviewState();
+}
+
+class _JobPreviewState extends State<JobPreview> {
+  bool acceptButtonClicked = false;
+
+  bool declineButtonClicked = false;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   build(BuildContext context) => Scaffold(
+    key: scaffoldKey,
     body: SafeArea(
       child: ListView(
         children: <Widget>[
@@ -57,8 +78,10 @@ class JobPreview extends StatelessWidget{
                         width: double.infinity,
                         height: 150.0,
                         child: Image(
-                          image: AssetImage("assets/images/pizza.jpg"),
+                          image: AssetImage("assets/images/profile_pic.jpg"),
                           fit: BoxFit.cover,
+                          colorBlendMode: BlendMode.hardLight,
+                          color: Colors.lightBlue,
                         ),
                       ),
 
@@ -70,7 +93,7 @@ class JobPreview extends StatelessWidget{
                           child: Column(
                             children: <Widget>[
                               Text(
-                                job.employerName,
+                                widget.job.employerName,
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               ),
 
@@ -89,7 +112,7 @@ class JobPreview extends StatelessWidget{
                                 },
                               ),
 
-                              Text(job.category),
+                              Text(widget.job.category),
                             ],
                           ),
                         ),
@@ -99,7 +122,7 @@ class JobPreview extends StatelessWidget{
                   Align(
                     alignment: Alignment.center,
                     child: Hero(
-                      tag: "avatar",
+                      tag: "avatar${widget.index}",
                       child: CircleAvatar(
                         backgroundImage: AssetImage("assets/images/profile_pic.jpg"),
                         radius: 50.0,
@@ -128,24 +151,24 @@ class JobPreview extends StatelessWidget{
                         ),
 
                         Text(
-                          job.startDate, 
+                          widget.job.startDate,
                         ),
                       ],
                     ),
 
-                     Row(                      
+                     Row(
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.access_time,
                             color: Colors.amber,
-                            
+
                           ),
                         ),
 
                         Text(
-                          job.startTime, 
+                          widget.job.startTime,
                         ),
                       ],
                     ),
@@ -161,7 +184,7 @@ class JobPreview extends StatelessWidget{
                         ),
 
                         Text(
-                          "One day job", 
+                          "One day job",
                         ),
                       ],
                     ),
@@ -184,7 +207,7 @@ class JobPreview extends StatelessWidget{
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: FittedBox(
                               fit: BoxFit.cover,
-                              child: Text(job.fee),
+                              child: Text(widget.job.fee),
                             ),
                           ),
                         ],
@@ -204,14 +227,14 @@ class JobPreview extends StatelessWidget{
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0),
                 child: Column(
-                  
+
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text("WHAT YOU WILL BE DOING"),
                     ),
-                    Text(job.description,
+                    Text(widget.job.description,
                       maxLines: null,
                       style: TextStyle(color: Color(0XFF808080)),
                     ),
@@ -219,7 +242,7 @@ class JobPreview extends StatelessWidget{
                 ),
               ),
             ),
-            
+
           ),
 
           Card(
@@ -241,7 +264,7 @@ class JobPreview extends StatelessWidget{
                     Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.done_all,
                             color: Colors.amber,
@@ -262,10 +285,10 @@ class JobPreview extends StatelessWidget{
                     ),
 
                     Row(
-                      
+
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Icon(
                           Icons.done_all,
                           color: Colors.amber,
@@ -288,7 +311,7 @@ class JobPreview extends StatelessWidget{
                      Row(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.done_all,
                             color: Colors.amber,
@@ -311,7 +334,7 @@ class JobPreview extends StatelessWidget{
                     Row(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Icon(
                           Icons.done_all,
                           color: Colors.amber,
@@ -335,7 +358,7 @@ class JobPreview extends StatelessWidget{
 
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Icon(
                           Icons.done_all,
                           color: Colors.amber,
@@ -362,23 +385,84 @@ class JobPreview extends StatelessWidget{
 
           Container(
             margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
-            
+
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Material(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                   color: Colors.green[400],
                   child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                     splashColor: Colors.black38,
-                    onTap: (){
+                    onTap: () async{
+                      setState(() {
+                        acceptButtonClicked = true;
+                      });
 
+                      final result = await acceptJob(widget.job.id);
+
+                      if(result){
+                        scaffoldKey.currentState.showSnackBar(SnackBar(
+                          duration: Duration(seconds: 3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(topRight: Radius.circular(4.0), topLeft: Radius.circular(4.0)),
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              IconTheme(
+                                data: IconThemeData(
+                                    color: Colors.green
+                                ),
+                                child: Icon(Icons.check_circle),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text("Success!")
+                              )
+                            ],
+                          ),
+                        ));
+                      }
+                      else{
+                        scaffoldKey.currentState.showSnackBar(SnackBar(
+                          duration: Duration(seconds: 3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(topRight: Radius.circular(4.0), topLeft: Radius.circular(4.0)),
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              IconTheme(
+                                data: IconThemeData(
+                                    color: Colors.red
+                                ),
+                                child: Icon(Icons.cancel),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Text("Failure!")
+                              )
+                            ],
+                          ),
+                        ));
+                      }
+
+                      setState(() {
+                        acceptButtonClicked = false;
+                      });
                     },
                     child: Padding(
-                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: 16.0, left: 16.0),
-                      child: Text("ACCEPT", 
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 16.0, left: 16.0),
+                      child: acceptButtonClicked ?
+                      Container(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator()
+                      ) :
+                      Text("ACCEPT",
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                       ),
                     ),
@@ -391,12 +475,74 @@ class JobPreview extends StatelessWidget{
                   child: InkWell(
                     borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     splashColor: Colors.black38,
-                    onTap: (){
+                    onTap: () async{
+                      setState(() {
+                        declineButtonClicked = true;
+                      });
+
+                      final result = await declineJob(widget.job.id);
+
+                      if(result){
+                        scaffoldKey.currentState.showSnackBar(SnackBar(
+                          duration: Duration(seconds: 3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(topRight: Radius.circular(4.0), topLeft: Radius.circular(4.0)),
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              IconTheme(
+                                data: IconThemeData(
+                                  color: Colors.green
+                                ),
+                                child: Icon(Icons.check_circle),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text("Success!")
+                              )
+                            ],
+                          ),
+                        ));
+                      }
+                      else{
+                        scaffoldKey.currentState.showSnackBar(SnackBar(
+                          duration: Duration(seconds: 3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(topRight: Radius.circular(4.0), topLeft: Radius.circular(4.0)),
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              IconTheme(
+                                data: IconThemeData(
+                                    color: Colors.red
+                                ),
+                                child: Icon(Icons.cancel),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text("Failure!")
+                              )
+                            ],
+                          ),
+                        ));
+                      }
+
+                      setState(() {
+                        declineButtonClicked = false;
+                      });
 
                     },
                     child: Padding(
-                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: 16.0, left: 16.0),
-                      child: Text("DECLINE", 
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 16.0, left: 16.0),
+                      child: declineButtonClicked ?
+                      Container(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator()
+                      ) :
+                      Text("DECLINE",
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                       ),
                     ),
