@@ -50,6 +50,7 @@ class ViewJobsState extends State<ViewJobs>{
     super.initState();
 
     final String email = widget.email;
+
     future = getPostedJobs(email);
   }
 
@@ -111,9 +112,7 @@ class ViewJobsState extends State<ViewJobs>{
             itemCount: snapshot.data.length,
             itemBuilder:(context, index) {
               EmployerJob employerJob = employerJobs[index];
-              //print(employerJob.job.getJobId);
               print(employerJob.job);
-
 
               return Container(
                 margin: EdgeInsets.only(top: 8.0, bottom: 8.0, left: 5.0, right: 5.0),
@@ -176,7 +175,7 @@ class ViewJobsState extends State<ViewJobs>{
                                   ],
                                 ),
 
-                                Bids(),
+                                Bids(employerJob.numOfWorkers),
 
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -226,7 +225,8 @@ class ViewJobsState extends State<ViewJobs>{
 //will indicate the number of bids e.g 0 Bids
 class Bids extends StatefulWidget{
 
-  final int numberOfBids = 0;
+  final String numberOfBids;
+  Bids(this.numberOfBids);
 
   @override
   createState() => BidsState();
@@ -243,11 +243,11 @@ class BidsState extends State<Bids>{
             style: DefaultTextStyle.of(context).style,
             children: <TextSpan>[
               TextSpan(
-                  text: "${widget.numberOfBids} ",
+                  text: "${EmployerJob.filterNumOfWorkers(widget.numberOfBids)}",
                   style: TextStyle(color: Colors.green)
               ),
               TextSpan(
-                  text: "BIDS"
+                  text: " WORKERS"
               )
             ]
         ),
