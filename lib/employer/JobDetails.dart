@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bakole/constants/Constants.dart';
+import 'package:bakole/employer/JobProgress.dart';
 import 'package:bakole/httpModels/Job.dart';
 import 'package:bakole/httpModels/Worker.dart';
 import 'package:bakole/utils/Utils.dart';
@@ -173,7 +174,12 @@ class ListRowState extends State<ListRow>{
           borderRadius: BorderRadius.circular(10.0),
           splashColor: Colors.black12,
           onTap: (){
-
+            Navigator.push(context, MaterialPageRoute<JobProgress>(
+              builder: (context) => JobProgress(
+                job: job,
+                worker: worker,
+              )
+            ));
           },
           child: Stack(
             children: <Widget>[
@@ -202,13 +208,13 @@ class ListRowState extends State<ListRow>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Text(job.description,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: 15.0,
-
-                            ),
-                          ),
+//                          Text(job.description,
+//                            maxLines: 1,
+//                            style: TextStyle(
+//                                fontSize: 15.0,
+//
+//                            ),
+//                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                             child: Text(job.getWorkerId,
@@ -253,10 +259,11 @@ class ListRowState extends State<ListRow>{
                           ),
                           Container(
                             padding: const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
-                            child: Text("Started"),
+                            child: Text(job.getProgress),
                           )
                         ],
-                      )
+                      ),
+
                     ],
 
                   ),

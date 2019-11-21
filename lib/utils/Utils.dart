@@ -79,3 +79,57 @@ String capitaliseFirstLetter(String string){
 
   return str1.toUpperCase() + str2.toLowerCase();
 }
+
+class ContinuousTextAnim extends StatefulWidget{
+  final text;
+  ContinuousTextAnim(this.text);
+
+  @override
+  State<ContinuousTextAnim> createState() {
+
+    return _ContinuousTextAnimState(this.text);
+  }
+}
+
+class _ContinuousTextAnimState extends State<ContinuousTextAnim>{
+
+  final String text;
+
+  _ContinuousTextAnimState(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+
+      child: Text(this.text,
+        style: TextStyle(
+            color: Colors.green,
+            fontSize: 16.0
+        ),
+      ),
+    );
+  }
+}
+
+void showErrorSnackBar(GlobalKey<ScaffoldState> key, {error}){
+  key.currentState.showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            IconTheme(
+              data: IconThemeData(
+                  color: Colors.red
+              ),
+              child: Icon(Icons.error),
+            ),
+
+            Text(error != null? error.toString() : "error has occured")
+          ],
+
+        ),
+      )
+  );
+}

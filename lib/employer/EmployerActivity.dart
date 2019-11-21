@@ -64,16 +64,16 @@ class EmployerActivityState extends State<EmployerActivity>{
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: Color(0XFFE5E5E5),
-          primaryColor: Colors.cyan,
+          canvasColor: Colors.blue,
+          //primaryColor: Colors.cyan,
         ),
         
         child: BottomNavigationBar(
           currentIndex: _index,
-          type: BottomNavigationBarType.shifting,
-          selectedItemColor: Colors.cyan[400],
-          unselectedItemColor: Colors.cyan,
-          
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          elevation: 10.0,
           items: [
             BottomNavigationBarItem(
               icon: Icon(
@@ -86,7 +86,7 @@ class EmployerActivityState extends State<EmployerActivity>{
 
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.view_headline,
+                Icons.business_center,
               ),
               title: Text(
                 "Your Jobs",

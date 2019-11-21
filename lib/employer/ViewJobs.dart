@@ -11,6 +11,8 @@ Future <List<EmployerJob>> getPostedJobs(String email) async{
   final url = "$AWS_SERVER_URL/employers/jobs/$email";
 
   try {
+
+    await httpClient.patch(url); //set number of workers
     final response = await httpClient.get(url);
     if(response.statusCode == 200){
       final List<Map<String, dynamic>> parsedResponse = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -247,7 +249,7 @@ class BidsState extends State<Bids>{
                   style: TextStyle(color: Colors.green)
               ),
               TextSpan(
-                  text: " WORKERS"
+                  text: " WORKER(S)"
               )
             ]
         ),

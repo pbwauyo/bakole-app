@@ -670,7 +670,7 @@ class _PostButtonState extends State<PostButton> {
                           );
 
                           EmployerJob employerJob = EmployerJob(
-                            status: Status.ACTIVE,
+                            status: Status.PENDING,
                             job: job
                           );
 

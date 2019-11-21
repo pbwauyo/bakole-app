@@ -1,3 +1,4 @@
+import 'package:bakole/constants/Constants.dart';
 import 'package:flutter/cupertino.dart';
 
 class Job {
@@ -14,8 +15,9 @@ class Job {
   final String startTime;
   final String startDate;
   String status;
+  String progress;
 
-  Job({this.id, @required this.jobId, this.workerId, this.employerName, this.employerEmail, this.employerDeviceToken, this.description, this.category, this.fee, this.location, this.startTime, this.startDate, this.status});
+  Job({this.id, @required this.jobId, this.workerId, this.employerName, this.employerEmail, this.employerDeviceToken, this.description, this.category, this.fee, this.location, this.startTime, this.startDate, this.status, this.progress});
 
   factory Job.fromJson(Map<String, dynamic> map){
   
@@ -32,8 +34,8 @@ class Job {
       location: map['place'],
       startTime: map['time'],
       startDate: map['date'],
-      status: map['status']
-
+      status: map['status'],
+      progress: map['progress']
     );
   }
 
@@ -51,14 +53,15 @@ class Job {
       'place' : location,
       'time' : startTime,
       'date' : startDate,
-      'status' : status
+      'status' : status,
+      'progress' : progress
     };
   }
 
   @override
   String toString() {
     
-    return "\n id: $id\n jobId : $getJobId\n employerName: $employerName\n employerEmail: $employerEmail\n description: $description\n category: $category\n fee: $fee\n place: $location\n startTime: $startTime\n startDate: $startDate\n status: $status\n";
+    return "\n id: $id\n jobId : $getJobId\n employerName: $employerName\n employerEmail: $employerEmail\n description: $description\n category: $category\n fee: $fee\n place: $location\n startTime: $startTime\n startDate: $startDate\n status: $status\n progress: $progress";
   }
 
   String get getWorkerId{
@@ -83,5 +86,16 @@ class Job {
 
   get getStatus{
     return this.status;
+  }
+
+  set setProgress(String progress){
+    this.progress = progress;
+  }
+
+  String get getProgress{
+    if(progress == null){
+      return Progress.NOT_STARTED;
+    }
+    return progress;
   }
 }

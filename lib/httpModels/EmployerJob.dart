@@ -7,7 +7,7 @@ class EmployerJob{
   String numOfWorkers;
   final Job job;
 
-  EmployerJob({this.id, @required this.status, @required this.numOfWorkers, @required this.job, });
+  EmployerJob({this.id, @required this.status, this.numOfWorkers, @required this.job, });
 
   factory EmployerJob.fromJson(Map<String, dynamic> map){
     return EmployerJob(
@@ -32,11 +32,18 @@ class EmployerJob{
   }
 
   static String filterNumOfWorkers(String num){
+    print("num is: ");
+    print(num);
     if(num == null || num.trim() == ""){
       return "0";
     }else{
       return num;
     }
+  }
+
+  static int convertStringToInt(String n){
+    final int num = int.parse(filterNumOfWorkers(n));
+    return num;
   }
 
 }
