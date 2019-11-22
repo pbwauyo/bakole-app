@@ -99,12 +99,11 @@ class BottomNavBarState extends State<BottomNavBar>{
 
       builder: (context, tab, _) => Stack(
         children: <Widget>[
-          
 
           Container(
             child: Theme(
               data: Theme.of(context).copyWith(
-                //canvasColor: Colors.grey.shade400.withOpacity(0.0)
+                canvasColor: Colors.lightBlue
               ),
               child: BottomNavigationBar(
 
@@ -112,9 +111,9 @@ class BottomNavBarState extends State<BottomNavBar>{
                 onTap: (index){
                   tab.setCurrentIndex = index;
                 },
-                type: BottomNavigationBarType.shifting,
-                selectedItemColor: Colors.blue[400],
-                unselectedItemColor: Colors.cyan,
+                type: BottomNavigationBarType.fixed,
+                selectedItemColor: Colors.white,
+                unselectedItemColor: Colors.white70,
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
