@@ -91,6 +91,10 @@ class ContinuousTextAnim extends StatefulWidget{
   }
 }
 
+String formatName(String fName, String lName){
+  return "${fName ?? ""} ${lName ?? ""}";
+}
+
 class _ContinuousTextAnimState extends State<ContinuousTextAnim>{
 
   final String text;

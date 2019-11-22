@@ -1,5 +1,8 @@
+import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/employer/EmployerActivity.dart';
 import 'package:bakole/httpModels/Employer.dart';
+import 'package:bakole/widgets/ReviewList.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -51,7 +54,7 @@ class ProfileState extends State<Profile>{
                           Container(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0, top: 15.0),
-                              child: Text(_employer.lastName,
+                              child: Text("${_employer.firstName ?? ""} ${_employer.lastName ?? ""}",
                                 style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold
@@ -145,6 +148,27 @@ class ProfileState extends State<Profile>{
               itemSize: 25.0,
               unratedColor: Colors.grey,
             ),
+          ),
+
+          Container(
+            margin: const EdgeInsets.only(bottom: 5.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              color: Colors.lightBlue
+            ),
+            padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 8.0, left: 8.0),
+            child: Text("Reviews",
+              style: TextStyle(
+                color: Colors.white
+              ),
+            ),
+          ),
+
+          Expanded(
+             child: ReviewList(
+               userEmail: _employer.email,
+               userType: UserType.EMPLOYER,
+             )
           )
         ],
       ),
