@@ -4,6 +4,7 @@ import 'package:bakole/constants/Constants.dart';
 import 'package:bakole/employer/JobProgress.dart';
 import 'package:bakole/httpModels/Job.dart';
 import 'package:bakole/httpModels/Worker.dart';
+import 'package:bakole/userInfo/UserDetails.dart';
 import 'package:bakole/utils/Utils.dart';
 import 'package:flutter/material.dart';
 
@@ -175,10 +176,7 @@ class ListRowState extends State<ListRow>{
           splashColor: Colors.black12,
           onTap: (){
             Navigator.push(context, MaterialPageRoute<JobProgress>(
-              builder: (context) => JobProgress(
-                job: job,
-                worker: worker,
-              )
+              builder:(context) => UserDetails(userType: UserType.WORKER, user: worker, job: job,)
             ));
           },
           child: Stack(
@@ -208,13 +206,6 @@ class ListRowState extends State<ListRow>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-//                          Text(job.description,
-//                            maxLines: 1,
-//                            style: TextStyle(
-//                                fontSize: 15.0,
-//
-//                            ),
-//                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                             child: Text(job.getWorkerId,

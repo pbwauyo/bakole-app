@@ -1,14 +1,10 @@
 import 'dart:convert';
 
 import 'package:bakole/constants/Constants.dart';
-import 'package:bakole/employer/AddJob.dart';
 import 'package:bakole/employer/EmployerActivity.dart';
-import 'package:bakole/employer/SearchWorkers.dart';
-import 'package:bakole/employer/workerDetails/WorkerDetails.dart';
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/httpModels/Worker.dart';
 import 'package:bakole/utils/Utils.dart';
-import 'package:bakole/worker/JobPreview.dart';
 import 'package:bakole/worker/WorkerActivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -102,7 +98,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/details',
+        initialRoute: '/',
         routes: {
           '/': (context) => FutureBuilder<Map<String, dynamic>>(
             future: loggedInUserFuture,
@@ -134,7 +130,6 @@ class _MyAppState extends State<MyApp> {
           ),
           '/home': (context) => HomePage("How can we help you?"),
           '/login' : (context) => FormBackground(),
-          '/details' : (context) => WorkerDetails(),
           
         },
         debugShowCheckedModeBanner: false,

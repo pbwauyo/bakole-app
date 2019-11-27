@@ -1,5 +1,4 @@
 import 'package:bakole/constants/Constants.dart';
-import 'package:bakole/employer/EmployerActivity.dart';
 import 'package:bakole/httpModels/Employer.dart';
 import 'package:bakole/widgets/ReviewList.dart';
 import 'package:flutter/cupertino.dart';

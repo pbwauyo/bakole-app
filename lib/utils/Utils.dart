@@ -116,8 +116,9 @@ class _ContinuousTextAnimState extends State<ContinuousTextAnim>{
   }
 }
 
-void showErrorSnackBar(GlobalKey<ScaffoldState> key, {error}){
-  key.currentState.showSnackBar(
+void showErrorSnackBar({error, context}){
+
+  Scaffold.of(context).showSnackBar(
       SnackBar(
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,

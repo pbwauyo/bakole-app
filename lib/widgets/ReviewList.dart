@@ -107,6 +107,8 @@ class _ReviewListState extends State<ReviewList> {
           final List<Map<String, dynamic>> list = snapshot.data;
           
           return ListView.builder(
+              physics: ClampingScrollPhysics(),
+              shrinkWrap: true,
               itemCount: list.length,
               itemBuilder: (context, index) {
                 final Review review = list[index]["review"];
